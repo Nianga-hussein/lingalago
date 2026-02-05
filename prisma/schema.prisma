@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  image         String?   // Avatar URL or char ID like "E", "L"
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Gamification Stats
+  xp            Int       @default(0)
+  streak        Int       @default(0)
+  hearts        Int       @default(5)
+  gems          Int       @default(0)
+  
+  // Progress
+  currentCourseId String?
+  userProgress    UserProgress[]
+}
+
+model Course {
+  id          String   @id @default(uuid())
+  title       String
+  imageSrc    String
+  units       Unit[]
+}
+
+model Unit {
+  id          String   @id @default(uuid())
+  title       String   // e.g., "Commande au café"
+  description String   // e.g., "Apprends à commander..."
+  order       Int
+  color       String   // e.g., "bg-brand-green"
+  
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id          String     @id @default(uuid())
+  title       String
+  order       Int
+  
+  unitId      String
+  unit        Unit       @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  
+  exercises   Exercise[]
+  userProgress UserProgress[]
+}
+
+model Exercise {
+  id          String   @id @default(uuid())
+  type        String   // "image_selection", "translation", "listening", "speech"
+  question    String
+  audioSrc    String?  // URL to audio file
+  
+  // For multiple choice / image selection
+  options     Json?    // Array of objects { id, label, iconSrc, isCorrect }
+  
+  // For text input / simple translation
+  correctAnswer String? 
+  
+  order       Int
+  
+  lessonId    String
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+}
+
+model UserProgress {
+  id          String   @id @default(uuid())
+  userId      String
+  lessonId    String
+  completed   Boolean  @default(false)
+  score       Int      @default(0) // Percentage or XP earned for this specific lesson
+  completedAt DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+}
