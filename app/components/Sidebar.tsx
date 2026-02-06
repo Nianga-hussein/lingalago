@@ -3,6 +3,7 @@ import { Home, BookOpen, Users, Settings, Mic, BarChart, Layers } from "lucide-r
 
 const sidebarItems = [
   { label: "Dashboard", href: "/admin", icon: Home },
+  { label: "Unités", href: "/admin/units", icon: Layers },
   { label: "Leçons", href: "/admin/lessons", icon: BookOpen },
   { label: "Audios", href: "/admin/audios", icon: Mic },
   { label: "Utilisateurs", href: "/admin/users", icon: Users },

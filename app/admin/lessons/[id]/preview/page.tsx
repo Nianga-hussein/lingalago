@@ -196,7 +196,7 @@ export default function LessonPreviewPage() {
                   <p className="text-red-700 font-bold text-sm">Bonne réponse :</p>
                   <p className="text-red-600 font-normal">
                     {currentExercise.type === "image_selection" 
-                      ? currentExercise.options?.find((o: any) => o.id === currentExercise.answer)?.label
+                      ? (currentExercise.options as any[])?.find((o: any) => o.id === currentExercise.answer)?.label
                       : currentExercise.answer}
                   </p>
                 </div>

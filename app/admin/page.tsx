@@ -1,6 +1,39 @@
 import { Users, BookOpen, CheckCircle, TrendingUp, LucideIcon } from "lucide-react";
+import { prisma } from "@/app/lib/prisma";
 
-export default function AdminDashboard() {
+async function getDashboardStats() {
+  try {
+    const [userCount, lessonCount, completedLessons, recentUsers] = await Promise.all([
+      prisma.user.count(),
+      prisma.lesson.count(),
+      prisma.userProgress.count({ where: { completed: true } }),
+      prisma.user.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: 5
+      })
+    ]);
+
+    return {
+      userCount,
+      lessonCount,
+      completedLessons,
+      recentUsers
+    };
+  } catch (error) {
+    console.error("Database connection error:", error);
+    // Return default values in case of error
+    return {
+      userCount: 0,
+      lessonCount: 0,
+      completedLessons: 0,
+      recentUsers: []
+    };
+  }
+}
+
+export default async function AdminDashboard() {
+  const stats = await getDashboardStats();
+
   return (
     <div className="space-y-8">
       <div>
@@ -11,30 +44,30 @@ export default function AdminDashboard() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard 
-          title="Utilisateurs Actifs" 
-          value="1,234" 
+          title="Utilisateurs" 
+          value={stats.userCount.toString()} 
           change="+12%" 
           icon={Users} 
           color="bg-brand-blue" 
         />
         <StatCard 
-          title="Leçons Complétées" 
-          value="8,543" 
+          title="Leçons Créées" 
+          value={stats.lessonCount.toString()} 
           change="+24%" 
-          icon={CheckCircle} 
+          icon={BookOpen} 
           color="bg-brand-green" 
         />
         <StatCard 
-          title="Mots Appris" 
-          value="45,200" 
+          title="Leçons Complétées" 
+          value={stats.completedLessons.toString()} 
           change="+8%" 
-          icon={BookOpen} 
+          icon={CheckCircle} 
           color="bg-brand-yellow" 
         />
         <StatCard 
-          title="Revenus Premium" 
-          value="$3,450" 
-          change="+5%" 
+          title="Revenus (Est.)" 
+          value="$0" 
+          change="+0%" 
           icon={TrendingUp} 
           color="bg-brand-red" 
         />
@@ -45,19 +78,21 @@ export default function AdminDashboard() {
         <div className="border border-gray-200 rounded-2xl p-6">
           <h2 className="text-xl font-bold text-gray-700 mb-4">Dernières Inscriptions</h2>
           <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+            {stats.recentUsers.map((user) => (
+              <div key={user.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-500">
-                    U{i}
+                  <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-500 uppercase">
+                    {user.image || user.name.charAt(0)}
                   </div>
                   <div>
-                    <p className="font-bold text-gray-700">Utilisateur {i}</p>
-                    <p className="text-xs text-gray-400">il y a {i} heures</p>
+                    <p className="font-bold text-gray-700">{user.name}</p>
+                    <p className="text-xs text-gray-400">
+                      {new Date(user.createdAt).toLocaleDateString()}
+                    </p>
                   </div>
                 </div>
-                <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold">
-                  Gratuit
+                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${user.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' : 'bg-green-100 text-green-700'}`}>
+                  {user.role}
                 </span>
               </div>
             ))}
@@ -69,7 +104,7 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-2 gap-4">
             <button className="p-4 rounded-xl border-2 border-gray-200 hover:border-brand-green hover:bg-green-50 transition-all text-left group">
               <span className="block font-bold text-gray-700 group-hover:text-brand-green">Ajouter une leçon</span>
-              <span className="text-sm text-gray-400">Créer un nouveau cours</span>
+              <span className="text-sm text-gray-400">Créer un nouveau contenu</span>
             </button>
             <button className="p-4 rounded-xl border-2 border-gray-200 hover:border-brand-blue hover:bg-blue-50 transition-all text-left group">
               <span className="block font-bold text-gray-700 group-hover:text-brand-blue">Valider Audios</span>

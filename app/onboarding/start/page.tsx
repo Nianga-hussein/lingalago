@@ -1,10 +1,29 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Globe, Zap } from "lucide-react";
 import { OnboardingHeader } from "@/app/components/OnboardingHeader";
 
 export default function StartPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const handleStart = async () => {
+    setLoading(true);
+    try {
+      await fetch("/api/onboarding", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ completed: true }),
+      });
+      router.push("/learn");
+    } catch (error) {
+      console.error("Failed to finish onboarding", error);
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex-1 flex flex-col pb-8">
       <OnboardingHeader progress={100} />
@@ -27,12 +46,13 @@ export default function StartPage() {
       </div>
 
       <div className="pt-4">
-        <Link 
-          href="/admin/lessons/1/preview" 
+        <button 
+          onClick={handleStart}
+          disabled={loading}
           className="w-full bg-brand-green hover:bg-brand-green-dark text-white font-bold py-4 rounded-2xl text-sm tracking-widest uppercase transition-all shadow-[0_4px_0_rgb(70,163,2)] hover:shadow-[0_2px_0_rgb(70,163,2)] translate-y-[-2px] hover:translate-y-[0px] active:shadow-none active:translate-y-[2px] text-center block"
         >
-          COMMENCER LA LEÇON
-        </Link>
+          {loading ? "CHARGEMENT..." : "COMMENCER LA LEÇON"}
+        </button>
       </div>
     </div>
   );

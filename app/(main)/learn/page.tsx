@@ -1,91 +1,306 @@
 import Link from "next/link";
-import { Star, Book, Heart, Zap, Flame, Crown } from "lucide-react";
+import { Star, Book, Zap, Flame, Crown, Video, Headphones, Gift, NotebookText } from "lucide-react";
+import { prisma } from "@/app/lib/prisma";
+import HeartsModal from "@/app/components/HeartsModal"; // Ensure you import this if used in LearnPage (client component needed) or keep it in layout
 
-export default function LearnPage() {
+// Helper to get lesson icon based on type
+const LessonIcon = ({ type, isCompleted, isLocked }: { type: string, isCompleted: boolean, isLocked: boolean }) => {
+  const opacity = isLocked ? "opacity-40" : "opacity-100";
+  const iconClass = `w-8 h-8 text-white fill-current ${opacity}`;
+  
+  if (isCompleted) {
+    return <CheckIcon className="w-10 h-10 text-white" />;
+  }
+
+  switch (type) {
+    case 'VIDEO':
+      return <Video className={iconClass} />;
+    case 'AUDIO':
+      return <Headphones className={iconClass} />;
+    case 'CHEST':
+      return <Gift className={iconClass} />;
+    case 'STORY':
+      return <Book className={iconClass} />;
+    case 'STAR':
+    default:
+      return <Star className={iconClass} />;
+  }
+};
+
+const CheckIcon = ({ className }: { className?: string }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path fillRule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clipRule="evenodd" />
+  </svg>
+);
+
+import { getSession } from "@/app/lib/auth";
+import { redirect } from "next/navigation";
+
+export const dynamic = 'force-dynamic';
+
+async function getLearningData() {
+  const session = await getSession();
+  if (!session) return null;
+  const userId = session.userId;
+
+  const course = await prisma.course.findFirst({
+    where: { title: "Lingala" }, // Filter by specific course title to ensure we get the seeded one
+    include: {
+      units: {
+        orderBy: { order: "asc" },
+        include: {
+          lessons: {
+            orderBy: { order: "asc" },
+            include: {
+              userProgress: {
+                where: { userId }
+              }
+            }
+          }
+        }
+      }
+    }
+  });
+
+  if (!course) {
+    // Fallback: Get ALL units if no course is found (temporary fix)
+    const allUnits = await prisma.unit.findMany({
+      orderBy: { order: "asc" },
+      include: {
+        lessons: {
+          orderBy: { order: "asc" },
+          include: {
+            userProgress: {
+              where: { userId }
+            }
+          }
+        }
+      }
+    });
+
+    // Fetch User Stats
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        xp: true,
+        streak: true,
+        hearts: true,
+        gems: true,
+      }
+    });
+
+    const userStats = user || { xp: 0, streak: 0, hearts: 5, gems: 0 };
+
+    if (allUnits.length > 0) {
+       return { 
+         units: allUnits.map(unit => ({
+          ...unit,
+          lessons: unit.lessons.map((lesson, index) => {
+            // Check if previous lesson is completed
+            const isFirst = index === 0;
+            const previousLesson = isFirst ? null : unit.lessons[index - 1];
+            const isPreviousCompleted = previousLesson ? (previousLesson.userProgress.length > 0 && previousLesson.userProgress[0].completed) : true;
+            
+            const isCompleted = lesson.userProgress.length > 0 && lesson.userProgress[0].completed;
+            const isLocked = !isFirst && !isPreviousCompleted && !isCompleted;
+
+            return {
+              ...lesson,
+              isCompleted,
+              isLocked // Add locked state
+            };
+          })
+        })),
+        userStats
+      };
+    }
+
+    return null;
+  }
+
+  // Fetch User Stats
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      xp: true,
+      streak: true,
+      hearts: true,
+      gems: true,
+      hasCompletedOnboarding: true,
+    }
+  });
+
+  if (user && !user.hasCompletedOnboarding) {
+      return { redirectOnboarding: true };
+  }
+
+  const userStats = user || { xp: 0, streak: 0, hearts: 5, gems: 0, hasCompletedOnboarding: false };
+
+  return {
+    units: course.units.map(unit => ({
+      ...unit,
+      lessons: unit.lessons.map((lesson, index) => {
+        // Check if previous lesson is completed
+        const isFirst = index === 0;
+        const previousLesson = isFirst ? null : unit.lessons[index - 1];
+        const isPreviousCompleted = previousLesson ? (previousLesson.userProgress.length > 0 && previousLesson.userProgress[0].completed) : true;
+        
+        const isCompleted = lesson.userProgress.length > 0 && lesson.userProgress[0].completed;
+        const isLocked = !isFirst && !isPreviousCompleted && !isCompleted;
+
+        return {
+          ...lesson,
+          isCompleted,
+          isLocked // Add locked state
+        };
+      })
+    })),
+    userStats
+  };
+}
+
+export default async function LearnPage() {
+  const session = await getSession();
+  if (!session) {
+    redirect("/login");
+  }
+
+  const data = await getLearningData();
+  
+  if (data?.redirectOnboarding) {
+      redirect("/onboarding/intro");
+  }
+
+  const units = data?.units;
+  const userStats = data?.userStats;
+
+  if (!units) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>Cours non trouvé. Avez-vous lancé le script de seed ? (npx prisma db seed)</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="py-6 px-4">
+    <div className="pb-24 md:pb-0">
       {/* Top Bar */}
-      <header className="flex items-center justify-between gap-4 mb-8 bg-white/90 backdrop-blur-sm sticky top-0 py-2 z-40">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">🇺🇸</span> 
+      <header className="flex items-center justify-between gap-2 px-4 py-3 bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div className="flex items-center gap-3 hover:bg-gray-100 p-1 rounded-xl cursor-pointer transition-colors">
+          <span className="text-2xl">🇨🇩</span> 
+          <span className="font-bold text-gray-400 text-sm">8</span>
         </div>
         
-        <div className="flex items-center gap-1 text-brand-orange font-bold">
-          <Flame className="w-5 h-5 fill-current" />
-          <span>1</span>
-        </div>
+        <div className="flex items-center gap-2">
+           <div className="flex items-center gap-1.5 px-2">
+             <Flame className="w-5 h-5 text-brand-orange fill-current" />
+             <span className="font-bold text-brand-orange">{userStats?.streak || 0}</span>
+           </div>
 
-        <div className="flex items-center gap-1 text-brand-blue font-bold">
-          <div className="w-5 h-5 bg-brand-blue rounded-sm rotate-45"></div>
-          <span>462</span>
-        </div>
+           <div className="flex items-center gap-1.5 px-2">
+             <div className="w-5 h-5 bg-brand-blue rounded-sm rotate-45 flex items-center justify-center">
+                <div className="w-2 h-2 bg-white/40 rounded-full"></div>
+             </div>
+             <span className="font-bold text-brand-blue">{userStats?.gems || 0}</span>
+           </div>
 
-        <div className="flex items-center gap-1 text-brand-red font-bold">
-          <Heart className="w-5 h-5 fill-current" />
-          <span>25</span>
+           <div className="flex items-center gap-1.5 px-2">
+             <Zap className="w-5 h-5 text-pink-500 fill-current" />
+             <span className="font-bold text-pink-500">{userStats?.hearts || 5}</span>
+           </div>
         </div>
       </header>
 
-      {/* Unit Header */}
-      <div className="bg-brand-green rounded-2xl p-4 mb-8 text-white flex justify-between items-center shadow-[0_4px_0_#46a302]">
-        <div>
-          <h2 className="font-bold text-sm opacity-80 uppercase tracking-widest mb-1">Chapitre 1, Unité 1</h2>
-          <p className="font-bold text-lg">Commande au café</p>
-        </div>
-        <Book className="w-8 h-8" />
+      {/* Render Units */}
+      <div className="px-4 py-6 max-w-[600px] mx-auto">
+        {units.map((unit) => (
+          <div key={unit.id} className="mb-12">
+            {/* Unit Header */}
+            <div className={`bg-brand-green rounded-xl p-4 mb-10 text-white flex justify-between items-center shadow-sm`}>
+              <div>
+                <h2 className="font-bold text-xs uppercase tracking-widest mb-1 text-green-100">
+                  Unit {unit.order}
+                </h2>
+                <p className="font-bold text-xl">{unit.title}</p>
+                <p className="text-sm text-green-100 mt-1 font-medium">{unit.description}</p>
+              </div>
+              <NotebookText className="w-8 h-8 opacity-90" />
+            </div>
+
+            {/* Path */}
+            <div className="flex flex-col items-center gap-6 relative">
+              {unit.lessons.map((lesson, index) => {
+                // Use server-calculated props directly
+                const isLocked = lesson.isLocked;
+                const isCurrent = !isLocked && !lesson.isCompleted;
+                
+                // Calculate horizontal offset for snake path
+                // Using a sine wave for the winding path
+                const offset = Math.sin(index * 0.8) * 70; 
+
+                // Determine Node Color
+                let nodeColor = "bg-brand-green"; // Default
+                let shadowColor = "shadow-[0_6px_0_#46a302]"; // Default shadow
+                
+                if (lesson.type === 'CHEST') {
+                   nodeColor = "bg-brand-yellow"; // Chest is usually gold
+                   shadowColor = "shadow-[0_6px_0_#cc9f00]";
+                }
+
+                if (isLocked) {
+                   nodeColor = "bg-[#e5e5e5]";
+                   shadowColor = "shadow-[0_6px_0_#cecece]";
+                }
+
+                return (
+                  <div key={lesson.id} className="relative" style={{ marginLeft: `${offset}px` }}>
+                     {isCurrent && (
+                        <div className="absolute -top-14 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2.5 rounded-xl border-2 border-gray-200 font-bold text-brand-green text-sm shadow-sm animate-bounce whitespace-nowrap z-20">
+                          COMMENCER
+                          <div className="absolute bottom-[-8px] left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white border-b-2 border-r-2 border-gray-200 rotate-45"></div>
+                        </div>
+                     )}
+
+                     {isCurrent || !isLocked ? (
+                       <Link href={`/lesson/${lesson.id}`} className="relative group block">
+                          {/* Outer ring for current lesson */}
+                          {isCurrent && (
+                             <div className="absolute inset-0 -m-1.5 border-[6px] border-black/5 rounded-full z-0"></div>
+                          )}
+                          
+                          <div className={`w-[70px] h-[70px] ${nodeColor} rounded-full flex items-center justify-center ${shadowColor} group-active:shadow-none group-active:translate-y-[6px] transition-all relative z-10`}>
+                            {/* Inner highlight for 3D effect */}
+                            <div className="absolute top-2 left-2 w-1/3 h-1/3 bg-white opacity-20 rounded-full"></div>
+                            
+                            {lesson.isCompleted ? (
+                               <CheckIcon className="w-8 h-8 text-white stroke-[4]" />
+                            ) : (
+                               <LessonIcon type={lesson.type} isCompleted={false} isLocked={false} />
+                            )}
+
+                            {/* Stars for completion (if any logic for stars existed) */}
+                            {lesson.isCompleted && (
+                               <div className="absolute -bottom-2 -right-1 flex">
+                                  <div className="w-4 h-4 bg-brand-yellow rounded-full border-2 border-white flex items-center justify-center">
+                                     <Star className="w-2 h-2 text-white fill-current" />
+                                  </div>
+                               </div>
+                            )}
+                          </div>
+                       </Link>
+                     ) : (
+                        <div className={`w-[70px] h-[70px] ${nodeColor} rounded-full flex items-center justify-center ${shadowColor} relative z-10`}>
+                          <LessonIcon type={lesson.type} isCompleted={false} isLocked={true} />
+                        </div>
+                     )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* Path */}
-      <div className="flex flex-col items-center gap-8 pb-20">
-        
-        {/* Node 1 - Active */}
-        <Link href="/lesson/summary" className="relative group">
-          <div className="w-20 h-20 bg-brand-green rounded-full flex items-center justify-center shadow-[0_6px_0_#46a302] group-active:shadow-none group-active:translate-y-[6px] transition-all relative z-10">
-            <Star className="w-10 h-10 text-white fill-current" />
-          </div>
-          {/* Crown Float */}
-          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-white px-3 py-1 rounded-xl border-2 border-gray-200 font-bold text-brand-green text-sm shadow-sm animate-bounce">
-            COMMENCER
-            <div className="absolute bottom-[-6px] left-1/2 transform -translate-x-1/2 w-3 h-3 bg-white border-b-2 border-r-2 border-gray-200 rotate-45"></div>
-          </div>
-        </Link>
-
-        {/* Node 2 - Locked */}
-        <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center shadow-[0_6px_0_#e5e5e5] ml-16">
-          <div className="w-16 h-16 bg-brand-yellow rounded-full flex items-center justify-center opacity-50">
-             <Star className="w-8 h-8 text-white fill-current" />
-          </div>
-        </div>
-
-        {/* Node 3 - Locked */}
-        <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center shadow-[0_6px_0_#e5e5e5] mr-16">
-          <div className="w-16 h-16 bg-brand-green rounded-full flex items-center justify-center opacity-50">
-             <div className="w-8 h-6 border-2 border-white rounded-md"></div>
-          </div>
-        </div>
-
-        {/* Chest */}
-        <div className="w-20 h-20 flex items-center justify-center">
-           <div className="w-16 h-14 bg-[#b57d2a] rounded-xl border-b-4 border-[#8d6120] flex items-center justify-center relative">
-              <div className="w-4 h-4 rounded-full bg-yellow-400 border-2 border-yellow-600"></div>
-           </div>
-        </div>
-
-        {/* Node 4 - Locked */}
-        <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center shadow-[0_6px_0_#e5e5e5] ml-16">
-          <div className="w-16 h-16 bg-brand-green rounded-full flex items-center justify-center opacity-50">
-             <div className="w-8 h-8 border-2 border-white rounded-full"></div>
-          </div>
-        </div>
-
-        {/* Floating Mascot */}
-        <div className="fixed bottom-24 right-4 animate-bounce-slow hidden md:block">
-           <div className="w-24 h-24 bg-brand-green rounded-full flex items-center justify-center border-4 border-white shadow-lg">
-              <span className="text-4xl">🦉</span>
-           </div>
-        </div>
-
-      </div>
     </div>
   );
 }

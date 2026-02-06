@@ -2,8 +2,14 @@
 
 import Link from "next/link";
 import { Zap, Target, Clock, ArrowRight } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function LessonSummaryPage() {
+function SummaryContent() {
+  const searchParams = useSearchParams();
+  const xp = searchParams.get("xp") || "10";
+  const score = searchParams.get("score") || "100";
+
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
       
@@ -25,15 +31,15 @@ export default function LessonSummaryPage() {
           <p className="text-white font-bold text-xs uppercase mb-1">XP Gagnés</p>
           <div className="flex items-center justify-center gap-2">
             <Zap className="w-6 h-6 text-white fill-current" />
-            <span className="text-white font-bold text-2xl">15</span>
+            <span className="text-white font-bold text-2xl">{xp}</span>
           </div>
         </div>
 
         <div className="bg-brand-green rounded-2xl p-4 border-b-4 border-[#46a302]">
-          <p className="text-white font-bold text-xs uppercase mb-1">Parfait !</p>
+          <p className="text-white font-bold text-xs uppercase mb-1">Précision</p>
           <div className="flex items-center justify-center gap-2">
             <Target className="w-6 h-6 text-white" />
-            <span className="text-white font-bold text-2xl">100%</span>
+            <span className="text-white font-bold text-2xl">{score}%</span>
           </div>
         </div>
 
@@ -53,5 +59,13 @@ export default function LessonSummaryPage() {
         RÉCUPÉRER MES XP
       </Link>
     </div>
+  );
+}
+
+export default function LessonSummaryPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SummaryContent />
+    </Suspense>
   );
 }

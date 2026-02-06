@@ -14,9 +14,9 @@ export default function Home() {
           >
             Espace Admin
           </Link>
-          <button className="bg-brand-green hover:bg-brand-green-dark text-white font-bold py-3 px-6 rounded-xl transition-all shadow-[0_4px_0_rgb(70,163,2)] hover:shadow-[0_2px_0_rgb(70,163,2)] translate-y-[-2px] hover:translate-y-[0px] active:shadow-none active:translate-y-[2px]">
+          <Link href="/signup" className="bg-brand-green hover:bg-brand-green-dark text-white font-bold py-3 px-6 rounded-xl transition-all shadow-[0_4px_0_rgb(70,163,2)] hover:shadow-[0_2px_0_rgb(70,163,2)] translate-y-[-2px] hover:translate-y-[0px] active:shadow-none active:translate-y-[2px]">
             C&apos;est parti !
-          </button>
+          </Link>
         </div>
       </header>
 
@@ -35,7 +35,7 @@ export default function Home() {
         </p>
         
         <div className="flex flex-col gap-3 w-full">
-          <Link href="/onboarding/intro" className="w-full bg-brand-green hover:bg-brand-green-dark text-white font-bold py-3.5 rounded-2xl text-sm tracking-widest uppercase transition-all shadow-[0_4px_0_rgb(70,163,2)] hover:shadow-[0_2px_0_rgb(70,163,2)] translate-y-[-2px] hover:translate-y-[0px] active:shadow-none active:translate-y-[2px] flex items-center justify-center">
+          <Link href="/signup" className="w-full bg-brand-green hover:bg-brand-green-dark text-white font-bold py-3.5 rounded-2xl text-sm tracking-widest uppercase transition-all shadow-[0_4px_0_rgb(70,163,2)] hover:shadow-[0_2px_0_rgb(70,163,2)] translate-y-[-2px] hover:translate-y-[0px] active:shadow-none active:translate-y-[2px] flex items-center justify-center">
             C&apos;EST PARTI !
           </Link>
           <Link href="/login" className="w-full bg-white border-2 border-gray-200 hover:bg-gray-50 text-brand-green font-bold py-3.5 rounded-2xl text-sm tracking-widest uppercase transition-all shadow-[0_4px_0_rgb(229,229,229)] hover:shadow-[0_2px_0_rgb(229,229,229)] translate-y-[-2px] hover:translate-y-[0px] active:shadow-none active:translate-y-[2px]">

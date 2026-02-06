@@ -15,10 +15,19 @@ enum Role {
   ADMIN
 }
 
+enum LessonType {
+  STAR
+  VIDEO
+  AUDIO
+  CHEST
+}
+
 model User {
   id            String    @id @default(uuid())
+  externalId    String?   @unique // Clerk ID (Optional now)
   name          String
   email         String    @unique
+  password      String?   // Hashed password for custom auth
   image         String?   // Avatar URL or char ID like "E", "L"
   role          Role      @default(USER)
   createdAt     DateTime  @default(now())
@@ -27,12 +36,34 @@ model User {
   // Gamification Stats
   xp            Int       @default(0)
   streak        Int       @default(0)
+  lastActiveDate DateTime? @default(now()) // For streak calculation
   hearts        Int       @default(5)
+  lastHeartRefill DateTime? // To track refill time
   gems          Int       @default(0)
   
   // Progress
   currentCourseId String?
   userProgress    UserProgress[]
+
+  // Onboarding Data
+  hasCompletedOnboarding Boolean @default(false)
+  onboardingReason       String? // e.g., "culture", "travel"
+  onboardingLevel        String? // e.g., "beginner", "intermediate"
+  dailyGoal              Int?    // e.g., 10 (minutes) or 20 (XP)
+  source                 String? // e.g., "google", "friend"
+
+  // Social
+  followedBy Follows[] @relation("followedBy")
+  following  Follows[] @relation("following")
+}
+
+model Follows {
+  follower    User @relation("following", fields: [followerId], references: [id])
+  followerId  String
+  following   User @relation("followedBy", fields: [followingId], references: [id])
+  followingId String
+
+  @@id([followerId, followingId])
 }
 
 model Course {
@@ -59,6 +90,7 @@ model Lesson {
   id          String     @id @default(uuid())
   title       String
   order       Int
+  type        LessonType @default(STAR)
   
   unitId      String
   unit        Unit       @relation(fields: [unitId], references: [id], onDelete: Cascade)
@@ -92,6 +124,10 @@ model UserProgress {
   completed   Boolean  @default(false)
   score       Int      @default(0) // Percentage or XP earned for this specific lesson
   completedAt DateTime @default(now())
+
+  // Resume capability
+  activeExerciseIndex Int @default(0)
+  activeFailedIds     Json? // Stores array of strings
 
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)

@@ -1,19 +1,38 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Globe } from "lucide-react";
 import { OnboardingHeader } from "@/app/components/OnboardingHeader";
 
 const goals = [
-  { id: "casual", name: "Tranquille", time: "5 min/jour" },
-  { id: "normal", name: "Normal", time: "10 min/jour" },
-  { id: "serious", name: "Intensif", time: "15 min/jour" },
-  { id: "intense", name: "Extrême", time: "20 min/jour" },
+  { id: "casual", name: "Tranquille", time: "5 min/jour", value: 5 },
+  { id: "normal", name: "Normal", time: "10 min/jour", value: 10 },
+  { id: "serious", name: "Intensif", time: "15 min/jour", value: 15 },
+  { id: "intense", name: "Extrême", time: "20 min/jour", value: 20 },
 ];
 
 export default function DailyGoalPage() {
+  const router = useRouter();
   const [selected, setSelected] = useState<string>("normal");
+  const [loading, setLoading] = useState(false);
+
+  const handleContinue = async () => {
+    if (!selected) return;
+    setLoading(true);
+    const goalValue = goals.find(g => g.id === selected)?.value || 10;
+    try {
+      await fetch("/api/onboarding", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dailyGoal: goalValue }),
+      });
+      router.push("/onboarding/motivation-summary");
+    } catch (error) {
+      console.error("Failed to save goal", error);
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex-1 flex flex-col pb-8">
@@ -47,12 +66,13 @@ export default function DailyGoalPage() {
       </div>
 
       <div className="pt-4 border-t border-gray-100 mt-auto">
-        <Link 
-          href="/onboarding/motivation-summary" 
+        <button 
+          onClick={handleContinue}
+          disabled={loading}
           className="w-full bg-brand-green hover:bg-brand-green-dark text-white font-bold py-4 rounded-2xl text-sm tracking-widest uppercase transition-all shadow-[0_4px_0_rgb(70,163,2)] hover:shadow-[0_2px_0_rgb(70,163,2)] translate-y-[-2px] hover:translate-y-[0px] active:shadow-none active:translate-y-[2px] text-center block"
         >
-          C'EST PARTI
-        </Link>
+          {loading ? "CHARGEMENT..." : "C'EST PARTI"}
+        </button>
       </div>
     </div>
   );

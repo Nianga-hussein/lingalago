@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { Flame, Check } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function StreakPage() {
+function StreakContent() {
+  // Ideally fetch real streak here or pass via params
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
       
@@ -16,8 +19,6 @@ export default function StreakPage() {
          <div className="text-brand-orange animate-pulse">
             <Flame className="w-48 h-48 fill-current" />
          </div>
-         {/* Mascot holding streak - simplified */}
-         <div className="absolute bottom-0 right-0 w-24 h-24 bg-brand-green rounded-full border-4 border-white"></div> 
       </div>
 
       <div className="text-brand-orange font-bold text-8xl mb-2">1</div>
@@ -41,5 +42,13 @@ export default function StreakPage() {
         CONTINUER
       </Link>
     </div>
+  );
+}
+
+export default function StreakPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <StreakContent />
+    </Suspense>
   );
 }

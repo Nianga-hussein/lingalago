@@ -1,93 +1,119 @@
-import { BarChart, Activity, Users, Globe } from "lucide-react";
+import { prisma } from "@/app/lib/prisma";
+import { Users, Layers, BookOpen, CheckCircle, TrendingUp } from "lucide-react";
 
-export default function StatsPage() {
-  return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Statistiques</h1>
-        <p className="text-gray-500 mt-2">Analysez la croissance et l'engagement des utilisateurs.</p>
-      </div>
+async function getStats() {
+  const [userCount, unitCount, lessonCount, progressCount] = await Promise.all([
+    prisma.user.count(),
+    prisma.unit.count(),
+    prisma.lesson.count(),
+    prisma.userProgress.count({ where: { completed: true } })
+  ]);
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-700">Utilisateurs Actifs (30 jours)</h3>
-            <Activity className="text-brand-green w-6 h-6" />
-          </div>
-          <div className="h-64 flex items-end justify-between gap-2">
-            {[40, 60, 45, 70, 85, 65, 90, 80, 95, 75, 60, 85].map((h, i) => (
-              <div key={i} className="w-full bg-brand-green/20 rounded-t-lg relative group">
-                <div 
-                  className="absolute bottom-0 left-0 right-0 bg-brand-green rounded-t-lg transition-all duration-500 group-hover:bg-brand-green-dark"
-                  style={{ height: `${h}%` }}
-                ></div>
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-between mt-4 text-xs font-bold text-gray-400 uppercase">
-            <span>Sem 1</span>
-            <span>Sem 2</span>
-            <span>Sem 3</span>
-            <span>Sem 4</span>
-          </div>
-        </div>
+  const recentUsers = await prisma.user.findMany({
+    take: 5,
+    orderBy: { createdAt: "desc" },
+    select: { id: true, name: true, email: true, createdAt: true, image: true }
+  });
 
-        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-700">Répartition Géographique</h3>
-            <Globe className="text-brand-blue w-6 h-6" />
-          </div>
-          <div className="space-y-4">
-            <CountryStat country="RDC" percent={65} color="bg-brand-blue" />
-            <CountryStat country="France" percent={15} color="bg-brand-yellow" />
-            <CountryStat country="Congo-Brazzaville" percent={10} color="bg-brand-green" />
-            <CountryStat country="Belgique" percent={5} color="bg-brand-red" />
-            <CountryStat country="Autres" percent={5} color="bg-gray-300" />
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-        <h3 className="text-xl font-bold text-gray-700 mb-6">Leçons les plus populaires</h3>
-        <div className="space-y-4">
-          {[
-            { name: "Salutations (Mbote)", views: 12500, completion: 85 },
-            { name: "Au marché", views: 8400, completion: 72 },
-            { name: "La famille", views: 6200, completion: 68 },
-            { name: "Les verbes être et avoir", views: 5100, completion: 55 },
-          ].map((lesson, i) => (
-            <div key={i} className="flex items-center gap-4">
-              <div className="w-8 font-bold text-gray-400">#{i + 1}</div>
-              <div className="flex-1">
-                <div className="flex justify-between mb-1">
-                  <span className="font-bold text-gray-700">{lesson.name}</span>
-                  <span className="text-sm text-gray-500 font-medium">{lesson.views} vues</span>
-                </div>
-                <div className="w-full bg-gray-100 rounded-full h-2">
-                  <div 
-                    className="bg-brand-yellow h-2 rounded-full" 
-                    style={{ width: `${lesson.completion}%` }}
-                  ></div>
-                </div>
-              </div>
-              <div className="text-sm font-bold text-brand-yellow">{lesson.completion}% finis</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  return { userCount, unitCount, lessonCount, progressCount, recentUsers };
 }
 
-function CountryStat({ country, percent, color }: { country: string, percent: number, color: string }) {
+export default async function StatsPage() {
+  const stats = await getStats();
+
   return (
-    <div>
-      <div className="flex justify-between mb-1 text-sm font-bold text-gray-600">
-        <span>{country}</span>
-        <span>{percent}%</span>
+    <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800">Statistiques</h1>
+          <p className="text-gray-500 mt-2 font-medium">Aperçu de la croissance de la plateforme.</p>
+        </div>
       </div>
-      <div className="w-full bg-gray-100 rounded-full h-3">
-        <div className={`${color} h-3 rounded-full`} style={{ width: `${percent}%` }}></div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-brand-blue">
+            <Users className="w-6 h-6" />
+          </div>
+          <div>
+            <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Utilisateurs</p>
+            <p className="text-3xl font-bold text-gray-800">{stats.userCount}</p>
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center text-brand-green">
+            <Layers className="w-6 h-6" />
+          </div>
+          <div>
+            <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Unités</p>
+            <p className="text-3xl font-bold text-gray-800">{stats.unitCount}</p>
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-yellow-600">
+            <BookOpen className="w-6 h-6" />
+          </div>
+          <div>
+            <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Leçons</p>
+            <p className="text-3xl font-bold text-gray-800">{stats.lessonCount}</p>
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600">
+            <CheckCircle className="w-6 h-6" />
+          </div>
+          <div>
+            <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Leçons Complétées</p>
+            <p className="text-3xl font-bold text-gray-800">{stats.progressCount}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+          <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-gray-400" />
+            Nouveaux Inscrits
+          </h2>
+          <div className="space-y-4">
+            {stats.recentUsers.map(user => (
+              <div key={user.id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-xl transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold uppercase">
+                    {user.image || user.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-bold text-gray-800">{user.name}</p>
+                    <p className="text-xs text-gray-400 font-medium">{user.email}</p>
+                  </div>
+                </div>
+                <span className="text-xs font-bold text-gray-400">
+                  {new Date(user.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}
+                </span>
+              </div>
+            ))}
+            {stats.recentUsers.length === 0 && (
+              <p className="text-gray-400 text-center py-4">Aucun utilisateur récent.</p>
+            )}
+          </div>
+        </div>
+
+        {/* Placeholder for Chart */}
+        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col items-center justify-center text-center">
+          <div className="w-full h-48 bg-gray-50 rounded-xl mb-4 flex items-end justify-center gap-2 p-4">
+             {/* Mock Chart Bars */}
+             <div className="w-8 bg-blue-200 h-1/3 rounded-t-md"></div>
+             <div className="w-8 bg-blue-300 h-1/2 rounded-t-md"></div>
+             <div className="w-8 bg-brand-blue h-3/4 rounded-t-md"></div>
+             <div className="w-8 bg-blue-300 h-2/3 rounded-t-md"></div>
+             <div className="w-8 bg-blue-200 h-1/2 rounded-t-md"></div>
+          </div>
+          <h3 className="font-bold text-gray-800">Activité Hebdomadaire</h3>
+          <p className="text-sm text-gray-400 mt-1">Nombre de leçons terminées par jour.</p>
+        </div>
       </div>
     </div>
   );

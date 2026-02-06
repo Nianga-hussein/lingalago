@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Globe, Youtube, Tv, Newspaper, Store, Facebook, Search, Music } from "lucide-react";
 import { OnboardingHeader } from "@/app/components/OnboardingHeader";
 
@@ -18,7 +18,25 @@ const sources = [
 ];
 
 export default function SourcePage() {
+  const router = useRouter();
   const [selected, setSelected] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleContinue = async () => {
+    if (!selected) return;
+    setLoading(true);
+    try {
+      await fetch("/api/onboarding", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ source: selected }),
+      });
+      router.push("/onboarding/reason");
+    } catch (error) {
+      console.error("Failed to save source", error);
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex-1 flex flex-col pb-8">
@@ -52,17 +70,17 @@ export default function SourcePage() {
       </div>
 
       <div className="pt-4 border-t border-gray-100 mt-auto">
-        <Link 
-          href="/onboarding/reason" 
+        <button 
+          onClick={handleContinue}
+          disabled={!selected || loading}
           className={`w-full font-bold py-4 rounded-2xl text-sm tracking-widest uppercase transition-all shadow-[0_4px_0_rgba(0,0,0,0.1)] active:shadow-none active:translate-y-[4px] text-center block ${
-            selected 
+            selected && !loading
               ? "bg-brand-green hover:bg-brand-green-dark text-white shadow-[0_4px_0_rgb(70,163,2)]" 
               : "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none"
           }`}
-          style={{ pointerEvents: selected ? 'auto' : 'none' }}
         >
-          CONTINUER
-        </Link>
+          {loading ? "CHARGEMENT..." : "CONTINUER"}
+        </button>
       </div>
     </div>
   );
