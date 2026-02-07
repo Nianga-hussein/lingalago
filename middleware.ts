@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 
-const protectedRoutes = ['/learn', '/lesson', '/profile', '/admin'];
-const adminRoutes = ['/admin'];
+const protectedRoutes = ['/learn', '/lesson', '/profile', '/admin', '/api/admin'];
+const adminRoutes = ['/admin', '/api/admin'];
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value;
@@ -13,6 +13,9 @@ export async function middleware(request: NextRequest) {
 
   if (isProtected) {
     if (!token) {
+      if (pathname.startsWith('/api/')) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
       return NextResponse.redirect(new URL('/login', request.url));
     }
 
@@ -24,6 +27,9 @@ export async function middleware(request: NextRequest) {
       // Check Admin Role
       if (adminRoutes.some(route => pathname.startsWith(route))) {
         if (payload.role !== 'ADMIN') {
+           if (pathname.startsWith('/api/')) {
+             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+           }
            // Redirect non-admins to learn page
            return NextResponse.redirect(new URL('/learn', request.url));
         }
@@ -31,6 +37,9 @@ export async function middleware(request: NextRequest) {
 
     } catch (error) {
       // Token invalid
+      if (pathname.startsWith('/api/')) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
       return NextResponse.redirect(new URL('/login', request.url));
     }
   }
@@ -39,5 +48,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 };

@@ -25,11 +25,11 @@ export default async function UsersPage() {
   const users = await getUsers();
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
+    <div className="space-y-8 pb-10">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Gestion des Utilisateurs</h1>
-          <p className="text-gray-500 mt-2 font-medium">Gérez les comptes, les rôles et les accès.</p>
+          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Utilisateurs</h1>
+          <p className="text-gray-500 mt-2 text-lg">Gérez les comptes, les rôles et suivez la progression des membres.</p>
         </div>
       </div>
 
