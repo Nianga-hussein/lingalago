@@ -360,7 +360,7 @@ export default function LessonClient({
   if (!currentExercise) return <div>Chargement...</div>;
 
   return (
-    <div className="min-h-screen flex flex-col max-w-2xl mx-auto p-4">
+    <div className="min-h-screen flex flex-col max-w-2xl mx-auto px-3 sm:px-4 py-4">
       {/* Header */}
       <header className="flex items-center gap-4 mb-8">
         <Link href="/learn" className="text-gray-400 hover:text-gray-600">

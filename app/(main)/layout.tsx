@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Shield, User } from "lucide-react";
 import MobileNav from "@/app/components/MobileNav";
+import Logo from "@/app/components/Logo";
 
 export default function MainLayout({
   children,
@@ -19,11 +20,11 @@ export default function MainLayout({
   ];
 
   return (
-    <div className="min-h-screen bg-white pb-32 md:pb-0 md:pl-64 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-background pb-28 md:pb-0 md:pl-64 flex flex-col md:flex-row">
       {/* Desktop Sidebar (Hidden on Mobile) */}
-      <aside className="hidden md:flex w-64 border-r border-gray-200 h-screen fixed left-0 top-0 flex-col p-4">
-        <div className="mb-8 px-4">
-          <h1 className="text-3xl font-bold text-brand-green tracking-wide">lingalago</h1>
+      <aside className="hidden md:flex w-64 border-r border-gray-200 h-screen fixed left-0 top-0 flex-col p-4 bg-background z-40">
+        <div className="mb-8 px-2">
+          <Logo size="sm" showText animate className="" />
         </div>
         <nav className="space-y-2">
           {navItems.map((item) => (
@@ -31,8 +32,8 @@ export default function MainLayout({
               key={item.href}
               href={item.href}
               className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-colors font-bold uppercase text-sm tracking-wide ${
-                pathname === item.href 
-                  ? "bg-blue-50 text-brand-blue border-2 border-brand-blue" 
+                pathname === item.href
+                  ? "bg-blue-50 text-[#1CB0F6] border-2 border-[#1CB0F6]"
                   : "text-gray-500 hover:bg-gray-100 border-2 border-transparent"
               }`}
             >
@@ -42,9 +43,9 @@ export default function MainLayout({
           ))}
         </nav>
       </aside>
-      
+
       {/* Main Content */}
-      <main className="flex-1 max-w-2xl mx-auto w-full">
+      <main className="flex-1 max-w-2xl mx-auto w-full px-1 sm:px-0">
         {children}
       </main>
 

@@ -183,9 +183,9 @@ export default async function LearnPage() {
   }
 
   return (
-    <div className="pb-24 md:pb-0">
+    <div className="pb-20 md:pb-0">
       {/* Top Bar */}
-      <header className="flex items-center justify-between gap-2 px-4 py-3 bg-white border-b border-gray-200 sticky top-0 z-40">
+      <header className="flex items-center justify-between gap-2 px-3 sm:px-4 py-3 bg-background border-b border-gray-200 sticky top-0 z-40">
         <div className="flex items-center gap-3 hover:bg-gray-100 p-1 rounded-xl cursor-pointer transition-colors">
           <span className="text-2xl">🇨🇩</span> 
           <span className="font-bold text-gray-400 text-sm">8</span>
@@ -212,7 +212,7 @@ export default async function LearnPage() {
       </header>
 
       {/* Render Units */}
-      <div className="px-4 py-6 max-w-[600px] mx-auto">
+      <div className="px-3 sm:px-4 py-6 max-w-[600px] mx-auto">
         {units.map((unit) => (
           <div key={unit.id} className="mb-12">
             {/* Unit Header */}

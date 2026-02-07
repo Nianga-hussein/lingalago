@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Globe, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
 import { OnboardingHeader } from "@/app/components/OnboardingHeader";
+import Logo from "@/app/components/Logo";
 
 export default function StartPage() {
   const router = useRouter();
@@ -29,10 +30,10 @@ export default function StartPage() {
       <OnboardingHeader progress={100} />
       
       <div className="flex-1 flex flex-col items-center justify-center text-center">
-        <div className="mb-8 relative w-48 h-48 animate-bounce-slow">
-           <Globe className="w-full h-full text-brand-green" />
-           <div className="absolute -top-4 -right-4 bg-brand-yellow text-white p-3 rounded-full shadow-lg animate-pulse">
-             <Zap className="w-8 h-8 fill-current" />
+        <div className="mb-8 relative">
+           <Logo size="xl" animate />
+           <div className="absolute -top-2 -right-2 bg-[#FFC800] text-background p-2.5 rounded-full shadow-lg animate-pulse">
+             <Zap className="w-6 h-6 fill-current" />
            </div>
         </div>
 

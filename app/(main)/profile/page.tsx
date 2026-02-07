@@ -37,7 +37,7 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="py-6 px-4 pb-24 md:pb-6">
+    <div className="py-6 px-3 sm:px-4 pb-24 md:pb-6">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-xl font-bold text-gray-400">{user.name}</h1>

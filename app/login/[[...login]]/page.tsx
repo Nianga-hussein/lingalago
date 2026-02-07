@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader2, AlertCircle, ArrowRight, Mail, Lock, Check } from "lucide-react";
-import { Globe } from "lucide-react";
+import Logo from "@/app/components/Logo";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -52,11 +52,11 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col lg:flex-row">
       {/* Left Side - Visual (Hidden on Mobile) */}
-      <div className="hidden lg:flex lg:w-1/2 bg-brand-green relative overflow-hidden items-center justify-center p-12">
+      <div className="hidden lg:flex lg:w-1/2 bg-[#58CC02] relative overflow-hidden items-center justify-center p-12">
         <div className="absolute inset-0 opacity-10 pattern-dots"></div>
-        <div className="relative z-10 text-center text-white max-w-lg">
-          <div className="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-8 backdrop-blur-sm animate-bounce-slow">
-            <Globe className="w-16 h-16 text-white" />
+        <div className="relative z-10 text-center text-background max-w-lg">
+          <div className="mx-auto mb-8 flex items-center justify-center">
+            <Logo size="xl" animate />
           </div>
           <h2 className="text-4xl font-bold mb-6">Bon retour parmi nous !</h2>
           <p className="text-xl text-green-100 leading-relaxed">
@@ -94,8 +94,8 @@ export default function LoginPage() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-8 lg:p-12">
         <div className="w-full max-w-md space-y-6 md:space-y-8">
           <div className="text-center lg:text-left">
-            <Link href="/" className="inline-block text-2xl font-bold text-brand-green mb-6 md:mb-8 tracking-wide">
-              lingalago
+            <Link href="/" className="inline-block mb-6 md:mb-8">
+              <Logo size="sm" showText animate={false} />
             </Link>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Se connecter</h1>
             <p className="text-gray-500">
