@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { X, Heart } from "lucide-react";
 import Link from "next/link";
@@ -44,7 +44,23 @@ export default function LessonClient({
   initialFailedIds?: string[]
 }) {
   const router = useRouter();
-  
+
+  // --- Sound Effects ---
+  const soundCache = useRef<Record<string, HTMLAudioElement>>({});
+
+  const playSound = useCallback((type: "valide" | "echec" | "reussite") => {
+    try {
+      if (!soundCache.current[type]) {
+        soundCache.current[type] = new Audio(`/sounds/${type}.mp3`);
+      }
+      const audio = soundCache.current[type];
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+    } catch {
+      // Silently fail if audio is not supported
+    }
+  }, []);
+
   // Initialize state based on saved progress
   const [failedExerciseIds, setFailedExerciseIds] = useState<Set<string>>(new Set(initialFailedIds));
   
@@ -206,8 +222,9 @@ export default function LessonClient({
     setIsChecked(true);
 
     if (correct) {
-       // Good job
+       playSound("valide");
     } else {
+       playSound("echec");
        loseHeart();
        setFailedExerciseIds(prev => new Set(prev).add(initialLesson.exercises.find(e => e.question === currentExercise.question)?.id || currentExercise.id));
        
@@ -292,7 +309,7 @@ export default function LessonClient({
           if (Object.keys(newPairs).length === parsedOptions.length) {
               setIsCorrect(true);
               setIsChecked(true);
-              // Play sound?
+              playSound("valide");
           }
       } else {
           // Incorrect Match
@@ -333,6 +350,10 @@ export default function LessonClient({
                   score: scorePercentage
               })
           });
+          // Play lesson success sound before redirecting
+          playSound("reussite");
+          // Small delay so the user hears the success sound
+          await new Promise(resolve => setTimeout(resolve, 1200));
           // Redirect to Summary page
           router.push(`/lesson/summary?xp=10&score=${scorePercentage}`); 
       } catch (error) {
@@ -360,7 +381,7 @@ export default function LessonClient({
   if (!currentExercise) return <div>Chargement...</div>;
 
   return (
-    <div className="min-h-screen flex flex-col max-w-2xl mx-auto p-4">
+    <div className="min-h-screen flex flex-col max-w-2xl mx-auto px-3 sm:px-4 py-4">
       {/* Header */}
       <header className="flex items-center gap-4 mb-8">
         <Link href="/learn" className="text-gray-400 hover:text-gray-600">

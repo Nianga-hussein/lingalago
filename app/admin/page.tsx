@@ -50,7 +50,7 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         <StatCard 
           title="Utilisateurs" 
           value={stats.userCount.toLocaleString()} 
@@ -89,6 +89,11 @@ export default async function AdminDashboard() {
         />
       </div>
 
+      {/* Recent Activity or Quick Actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
+        <div className="border border-gray-200 rounded-2xl p-6">
+          <h2 className="text-xl font-bold text-gray-700 mb-4">Dernières Inscriptions</h2>
+          <div className="space-y-4">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Recent Activity */}
         <div className="lg:col-span-2 bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-sm">

@@ -41,9 +41,9 @@ export default async function LeaderboardPage() {
   const isUserInList = currentUserRank > 0;
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-32">
+    <div className="min-h-screen bg-gray-50 pb-24 md:pb-8">
       {/* Header Banner */}
-      <div className="bg-brand-blue pt-8 pb-16 px-6 rounded-b-[40px] shadow-lg relative overflow-hidden">
+      <div className="bg-[#1CB0F6] pt-6 sm:pt-8 pb-14 sm:pb-16 px-4 sm:px-6 rounded-b-[30px] sm:rounded-b-[40px] shadow-lg relative overflow-hidden">
          {/* Decorative Circles */}
          <div className="absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-2xl"></div>
          <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/10 rounded-full translate-x-1/3 translate-y-1/3 blur-2xl"></div>
@@ -58,7 +58,7 @@ export default async function LeaderboardPage() {
          </div>
       </div>
 
-      <div className="px-4 -mt-10 max-w-xl mx-auto">
+      <div className="px-3 sm:px-4 -mt-10 max-w-xl mx-auto">
         {/* PODIUM SECTION */}
         <div className="flex justify-center items-end gap-2 mb-8 h-48">
             {/* 2nd Place */}

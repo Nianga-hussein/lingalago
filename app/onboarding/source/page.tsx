@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Globe, Youtube, Tv, Newspaper, Store, Facebook, Search, Music } from "lucide-react";
+import { Youtube, Tv, Newspaper, Store, Facebook, Search, Music } from "lucide-react";
 import { OnboardingHeader } from "@/app/components/OnboardingHeader";
+import Logo from "@/app/components/Logo";
 
 const sources = [
   { id: "youtube", name: "YouTube", icon: Youtube },
@@ -43,9 +44,7 @@ export default function SourcePage() {
       <OnboardingHeader progress={20} />
       
       <div className="flex items-center gap-4 mb-6 mt-2">
-        <div className="w-16 h-16 flex-shrink-0">
-          <Globe className="w-full h-full text-brand-green" />
-        </div>
+        <Logo size="md" animate />
         <div className="bg-white border-2 border-gray-200 rounded-2xl p-4 text-gray-700 font-bold text-lg shadow-sm relative">
           Comment as-tu entendu parler de LingalaGo ?
           <div className="absolute top-1/2 left-[-8px] transform -translate-y-1/2 w-4 h-4 bg-white border-l-2 border-b-2 border-gray-200 rotate-45"></div>

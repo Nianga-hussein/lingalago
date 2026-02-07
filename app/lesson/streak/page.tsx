@@ -8,7 +8,7 @@ import { Suspense } from "react";
 function StreakContent() {
   // Ideally fetch real streak here or pass via params
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 sm:p-6 text-center">
       
       <div className="bg-white border-2 border-gray-200 rounded-2xl p-4 text-gray-700 font-bold text-lg shadow-sm relative mb-8 max-w-xs mx-auto">
         Une série est née ! Entraîne-toi chaque jour pour te créer une habitude.

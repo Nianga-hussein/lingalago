@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Zap, Target, Clock, ArrowRight } from "lucide-react";
+import { Zap, Target, Clock } from "lucide-react";
+import Logo from "@/app/components/Logo";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
@@ -11,22 +12,17 @@ function SummaryContent() {
   const score = searchParams.get("score") || "100";
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 sm:p-6 text-center">
       
-      <div className="mb-8 relative w-48 h-48">
-         {/* Success Mascot Animation Placeholder */}
-         <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-40 h-40 bg-brand-green rounded-full animate-bounce flex items-center justify-center">
-               <span className="text-6xl">🎉</span>
-            </div>
-         </div>
+      <div className="mb-8">
+         <Logo size="xl" animate />
       </div>
 
       <h1 className="text-3xl font-bold text-brand-yellow mb-8">
         Entraînement terminé !
       </h1>
 
-      <div className="grid grid-cols-3 gap-4 w-full max-w-md mb-12">
+      <div className="grid grid-cols-3 gap-2 sm:gap-4 w-full max-w-md mb-12">
         <div className="bg-brand-yellow rounded-2xl p-4 border-b-4 border-[#cc9f00]">
           <p className="text-white font-bold text-xs uppercase mb-1">XP Gagnés</p>
           <div className="flex items-center justify-center gap-2">

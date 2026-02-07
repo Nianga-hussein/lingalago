@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Globe, MessageCircle, BookOpen, Clock } from "lucide-react";
+import { MessageCircle, BookOpen, Clock } from "lucide-react";
 import { OnboardingHeader } from "@/app/components/OnboardingHeader";
+import Logo from "@/app/components/Logo";
 
 export default function MotivationSummaryPage() {
   return (
@@ -10,9 +11,7 @@ export default function MotivationSummaryPage() {
       <OnboardingHeader progress={60} />
       
       <div className="flex items-center gap-4 mb-6 mt-2">
-        <div className="w-16 h-16 flex-shrink-0">
-          <Globe className="w-full h-full text-brand-green" />
-        </div>
+        <Logo size="md" animate />
         <div className="bg-white border-2 border-gray-200 rounded-2xl p-4 text-gray-700 font-bold text-lg shadow-sm relative">
           Regarde tout ce que tu peux accomplir en 3 mois !
           <div className="absolute top-1/2 left-[-8px] transform -translate-y-1/2 w-4 h-4 bg-white border-l-2 border-b-2 border-gray-200 rotate-45"></div>
