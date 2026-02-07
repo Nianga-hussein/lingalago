@@ -28,11 +28,11 @@ export default async function LessonsPage() {
   const { lessons, units } = await getData();
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
+    <div className="space-y-8 pb-10">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Gestion des Leçons</h1>
-          <p className="text-gray-500 mt-2 font-medium">Créez et organisez le contenu pédagogique.</p>
+          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Leçons</h1>
+          <p className="text-gray-500 mt-2 text-lg">Créez et organisez le contenu pédagogique interactif.</p>
         </div>
       </div>
 
