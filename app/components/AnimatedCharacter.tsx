@@ -1,13 +1,6 @@
 "use client";
 
-<<<<<<< HEAD
-import { useState, useEffect, Suspense } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-import Character3DBody from "./Character3DBody";
-=======
 import { useState, useEffect } from "react";
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 
 type CharacterType = "man" | "woman" | "child";
 type CharacterMood = "happy" | "encourage" | "celebrate" | "thinking";
@@ -48,42 +41,6 @@ function getRandomMessage(mood: CharacterMood): string {
 }
 
 // ============================================
-<<<<<<< HEAD
-// 3D Scene wrapping the character body
-// ============================================
-
-function CharacterScene({
-  character,
-  mood,
-}: {
-  character: CharacterType;
-  mood: CharacterMood;
-}) {
-  return (
-    <>
-      <ambientLight intensity={0.7} />
-      <directionalLight position={[3, 5, 4]} intensity={1} castShadow />
-      <directionalLight position={[-2, 3, -2]} intensity={0.3} />
-      <pointLight position={[0, 2, 3]} intensity={0.4} color="#ffe4c4" />
-
-      <Suspense fallback={null}>
-        <Character3DBody character={character} mood={mood} />
-      </Suspense>
-
-      {/* Ground shadow */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.2, 0]} receiveShadow>
-        <circleGeometry args={[0.5, 32]} />
-        <meshStandardMaterial color="#000" transparent opacity={0.08} />
-      </mesh>
-
-      <OrbitControls
-        enableZoom={false}
-        enablePan={false}
-        enableRotate={false}
-        target={[0, 0, 0]}
-      />
-    </>
-=======
 // SVG Articulated Character with CSS Animations
 // ============================================
 
@@ -329,7 +286,6 @@ function CharacterSVG({
         </g>
       </g>
     </svg>
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
   );
 }
 
@@ -357,24 +313,14 @@ export default function AnimatedCharacter({
   character,
   className = "",
 }: AnimatedCharacterProps) {
-<<<<<<< HEAD
-  const [charType] = useState<CharacterType>(
-    () => character || (["man", "woman", "child"][Math.floor(Math.random() * 3)] as CharacterType)
-  );
-=======
   const [charType] = useState<CharacterType>(() => character || (["man", "woman", "child"][Math.floor(Math.random() * 3)] as CharacterType));
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
   const [displayMessage, setDisplayMessage] = useState<string>("");
 
   useEffect(() => {
     setDisplayMessage(message || getRandomMessage(mood));
   }, [mood, message]);
 
-<<<<<<< HEAD
-  const canvasSize = size === "sm" ? 100 : size === "md" ? 150 : 200;
-=======
   const svgSize = size === "sm" ? 80 : size === "md" ? 120 : 160;
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 
   const positionClasses = {
     left: "flex-row",
@@ -384,39 +330,16 @@ export default function AnimatedCharacter({
 
   return (
     <div className={`flex items-end gap-3 ${positionClasses[position]} ${className}`}>
-<<<<<<< HEAD
-      {/* 3D Canvas */}
-      <div
-        className="flex-shrink-0 rounded-xl overflow-hidden"
-        style={{ width: canvasSize, height: canvasSize }}
-      >
-        <Canvas
-          camera={{ position: [0, 0.2, 3], fov: 35 }}
-          style={{ background: "transparent" }}
-          gl={{ alpha: true, antialias: true }}
-        >
-          <CharacterScene character={charType} mood={mood} />
-        </Canvas>
-=======
       {/* SVG Character */}
       <div className="flex-shrink-0 relative" style={{ width: svgSize, height: svgSize }}>
         <CharacterSVG character={charType} mood={mood} size={svgSize} />
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
       </div>
 
       {/* Speech Bubble */}
       {showMessage && displayMessage && (
         <div
           className={`relative max-w-[220px] px-4 py-3 bg-white border-2 border-gray-200 rounded-2xl shadow-sm ${
-<<<<<<< HEAD
-            position === "left"
-              ? "character-bubble-left"
-              : position === "right"
-                ? "character-bubble-right"
-                : ""
-=======
             position === "left" ? "character-bubble-left" : position === "right" ? "character-bubble-right" : ""
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
           }`}
         >
           <p className="text-sm font-semibold text-foreground leading-snug">

@@ -68,7 +68,6 @@ body {
 
 @keyframes logoShadow {
 
-<<<<<<< HEAD
   0%,
   100% {
     opacity: 0.12;
@@ -567,7 +566,6 @@ body {
 .owl-feather-bounce-2 {
   animation: owlFeatherBounce2 3.2s ease-in-out infinite;
 }
-=======
 .logo-float { animation: logoFloat 3s ease-in-out infinite; }
 .logo-wobble { animation: logoWobble 5s ease-in-out infinite; transform-origin: center center; }
 .logo-shadow { animation: logoShadow 3s ease-in-out infinite; }
@@ -746,7 +744,6 @@ body {
 }
 .owl-feather-bounce { animation: owlFeatherBounce 3s ease-in-out infinite; }
 .owl-feather-bounce-2 { animation: owlFeatherBounce2 3.2s ease-in-out infinite; }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 
 /* ===== Responsive Utilities ===== */
 @keyframes bounceSlow {
@@ -769,7 +766,6 @@ body {
 
 /* --- Entry Animation --- */
 @keyframes characterSlideIn {
-<<<<<<< HEAD
   from {
     opacity: 0;
     transform: translateX(-30px);
@@ -779,10 +775,8 @@ body {
     opacity: 1;
     transform: translateX(0);
   }
-=======
   from { opacity: 0; transform: translateX(-30px); }
   to { opacity: 1; transform: translateX(0); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .character-slide-in {
@@ -795,7 +789,6 @@ body {
 }
 
 @keyframes characterFloat {
-<<<<<<< HEAD
 
   0%,
   100% {
@@ -805,15 +798,12 @@ body {
   50% {
     transform: translateY(-6px);
   }
-=======
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 /* --- LEFT ARM: Wave gesture (encourage) --- */
 @keyframes armWave {
-<<<<<<< HEAD
   0% {
     transform: rotate(0deg);
   }
@@ -845,7 +835,6 @@ body {
   100% {
     transform: rotate(0deg);
   }
-=======
   0%   { transform: rotate(0deg); }
   15%  { transform: rotate(-120deg); }
   30%  { transform: rotate(-100deg); }
@@ -854,7 +843,6 @@ body {
   75%  { transform: rotate(-120deg); }
   90%  { transform: rotate(-60deg); }
   100% { transform: rotate(0deg); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-arm-wave {
@@ -863,7 +851,6 @@ body {
 
 /* --- FOREARM: Additional wave flick --- */
 @keyframes forearmWave {
-<<<<<<< HEAD
 
   0%,
   100% {
@@ -881,12 +868,10 @@ body {
   75% {
     transform: rotate(-15deg);
   }
-=======
   0%, 100% { transform: rotate(0deg); }
   25% { transform: rotate(-20deg); }
   50% { transform: rotate(10deg); }
   75% { transform: rotate(-15deg); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-forearm-wave {
@@ -895,7 +880,6 @@ body {
 
 /* --- LEFT ARM: Celebrate (raise high) --- */
 @keyframes armCelebrateLeft {
-<<<<<<< HEAD
   0% {
     transform: rotate(0deg);
   }
@@ -919,14 +903,12 @@ body {
   100% {
     transform: rotate(-160deg);
   }
-=======
   0%   { transform: rotate(0deg); }
   20%  { transform: rotate(-160deg); }
   40%  { transform: rotate(-145deg); }
   60%  { transform: rotate(-160deg); }
   80%  { transform: rotate(-145deg); }
   100% { transform: rotate(-160deg); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-arm-celebrate-left {
@@ -935,7 +917,6 @@ body {
 
 /* --- RIGHT ARM: Celebrate (raise high) --- */
 @keyframes armCelebrateRight {
-<<<<<<< HEAD
   0% {
     transform: rotate(0deg);
   }
@@ -959,14 +940,12 @@ body {
   100% {
     transform: rotate(160deg);
   }
-=======
   0%   { transform: rotate(0deg); }
   20%  { transform: rotate(160deg); }
   40%  { transform: rotate(145deg); }
   60%  { transform: rotate(160deg); }
   80%  { transform: rotate(145deg); }
   100% { transform: rotate(160deg); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-arm-celebrate-right {
@@ -975,7 +954,6 @@ body {
 
 /* --- LEFT ARM: Thinking (hand to chin) --- */
 @keyframes armChin {
-<<<<<<< HEAD
   0% {
     transform: rotate(0deg);
   }
@@ -987,11 +965,9 @@ body {
   100% {
     transform: rotate(-85deg);
   }
-=======
   0%   { transform: rotate(0deg); }
   30%  { transform: rotate(-85deg); }
   100% { transform: rotate(-85deg); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-arm-chin {
@@ -1000,7 +976,6 @@ body {
 
 /* --- LEFT ARM: Idle (slight sway) --- */
 @keyframes armIdleLeft {
-<<<<<<< HEAD
 
   0%,
   100% {
@@ -1010,10 +985,8 @@ body {
   50% {
     transform: rotate(-5deg);
   }
-=======
   0%, 100% { transform: rotate(0deg); }
   50% { transform: rotate(-5deg); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-arm-idle {
@@ -1022,7 +995,6 @@ body {
 
 /* --- RIGHT ARM: Idle --- */
 @keyframes armIdleRight {
-<<<<<<< HEAD
 
   0%,
   100% {
@@ -1032,10 +1004,8 @@ body {
   50% {
     transform: rotate(5deg);
   }
-=======
   0%, 100% { transform: rotate(0deg); }
   50% { transform: rotate(5deg); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-arm-idle-right {
@@ -1044,7 +1014,6 @@ body {
 
 /* --- RIGHT ARM: Happy wave (small) --- */
 @keyframes armHappyRight {
-<<<<<<< HEAD
 
   0%,
   100% {
@@ -1062,12 +1031,10 @@ body {
   75% {
     transform: rotate(10deg);
   }
-=======
   0%, 100% { transform: rotate(0deg); }
   25% { transform: rotate(15deg); }
   50% { transform: rotate(-5deg); }
   75% { transform: rotate(10deg); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-arm-happy-right {
@@ -1076,7 +1043,6 @@ body {
 
 /* --- HEAD: Tilt for thinking --- */
 @keyframes headTilt {
-<<<<<<< HEAD
   0% {
     transform: rotate(0deg);
   }
@@ -1092,12 +1058,10 @@ body {
   100% {
     transform: rotate(8deg);
   }
-=======
   0%   { transform: rotate(0deg); }
   30%  { transform: rotate(8deg); }
   60%  { transform: rotate(10deg); }
   100% { transform: rotate(8deg); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-head-tilt {
@@ -1106,7 +1070,6 @@ body {
 
 /* --- HEAD: Nod for celebrate --- */
 @keyframes headNod {
-<<<<<<< HEAD
 
   0%,
   100% {
@@ -1124,12 +1087,10 @@ body {
   75% {
     transform: translateY(4px);
   }
-=======
   0%, 100% { transform: translateY(0); }
   25% { transform: translateY(4px); }
   50% { transform: translateY(0); }
   75% { transform: translateY(4px); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-head-nod {
@@ -1138,7 +1099,6 @@ body {
 
 /* --- HEAD: Slow gentle nod for happy --- */
 @keyframes headNodSlow {
-<<<<<<< HEAD
 
   0%,
   100% {
@@ -1148,10 +1108,8 @@ body {
   50% {
     transform: translateY(2px) rotate(2deg);
   }
-=======
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50% { transform: translateY(2px) rotate(2deg); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-head-nod-slow {
@@ -1160,7 +1118,6 @@ body {
 
 /* --- BODY: Jump for celebrate --- */
 @keyframes bodyJump {
-<<<<<<< HEAD
 
   0%,
   100% {
@@ -1178,12 +1135,10 @@ body {
   70% {
     transform: translateY(-8px);
   }
-=======
   0%, 100% { transform: translateY(0); }
   30% { transform: translateY(-12px); }
   50% { transform: translateY(0); }
   70% { transform: translateY(-8px); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-body-jump {
@@ -1192,7 +1147,6 @@ body {
 
 /* --- Shadow pulse with jump --- */
 @keyframes shadowPulse {
-<<<<<<< HEAD
 
   0%,
   100% {
@@ -1214,12 +1168,10 @@ body {
     transform: scaleX(0.8);
     opacity: 0.05;
   }
-=======
   0%, 100% { transform: scaleX(1); opacity: 0.08; }
   30% { transform: scaleX(0.7); opacity: 0.04; }
   50% { transform: scaleX(1); opacity: 0.08; }
   70% { transform: scaleX(0.8); opacity: 0.05; }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-shadow {
@@ -1228,7 +1180,6 @@ body {
 
 /* --- PUPILS: Look around --- */
 @keyframes pupilLook {
-<<<<<<< HEAD
 
   0%,
   100% {
@@ -1242,11 +1193,9 @@ body {
   60% {
     transform: translateX(-2px);
   }
-=======
   0%, 100% { transform: translateX(0); }
   30% { transform: translateX(2px); }
   60% { transform: translateX(-2px); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-pupil {
@@ -1255,7 +1204,6 @@ body {
 
 /* --- FINGERS: Wiggle --- */
 @keyframes fingerWiggle {
-<<<<<<< HEAD
 
   0%,
   100% {
@@ -1265,10 +1213,8 @@ body {
   50% {
     transform: scaleY(0.9);
   }
-=======
   0%, 100% { transform: scaleY(1); }
   50% { transform: scaleY(0.9); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-fingers {
@@ -1277,7 +1223,6 @@ body {
 
 /* --- LEGS: Subtle bounce --- */
 @keyframes legBounceLeft {
-<<<<<<< HEAD
 
   0%,
   100% {
@@ -1299,7 +1244,6 @@ body {
   50% {
     transform: translateY(-2px);
   }
-=======
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-2px); }
 }
@@ -1307,7 +1251,6 @@ body {
 @keyframes legBounceRight {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-2px); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-leg-left {
@@ -1321,7 +1264,6 @@ body {
 
 /* --- Thinking hand floating near chin --- */
 @keyframes thinkHandFloat {
-<<<<<<< HEAD
 
   0%,
   100% {
@@ -1331,10 +1273,8 @@ body {
   50% {
     transform: translateY(-2px);
   }
-=======
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-2px); }
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 }
 
 .anim-think-hand {
@@ -1389,7 +1329,6 @@ body {
   border-bottom: 7px solid transparent;
   border-left: 8px solid white;
 }
-<<<<<<< HEAD
 
 /* ===== Leaderboard Shimmer ===== */
 @keyframes shimmer {
@@ -1401,5 +1340,3 @@ body {
     transform: translateX(100%);
   }
 }
-=======
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
