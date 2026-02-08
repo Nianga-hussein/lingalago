@@ -44,7 +44,7 @@ export function Sidebar() {
             className="w-10 h-10 transition-transform duration-500 group-hover:rotate-[360deg]" 
           />
           <div>
-            <h1 className="text-2xl font-black text-brand-green tracking-tighter leading-none">lingalago</h1>
+            <h1 className="text-2xl font-black text-brand-green tracking-tighter leading-none">LingalaGo</h1>
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-300">Admin Panel</span>
           </div>
         </Link>

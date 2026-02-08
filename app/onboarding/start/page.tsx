@@ -31,7 +31,7 @@ export default function StartPage() {
       
       <div className="flex-1 flex flex-col items-center justify-center text-center">
         <div className="mb-8 relative">
-           <Logo size="xl" animate />
+           <Logo size="xl" animate mood="celebrate" />
            <div className="absolute -top-2 -right-2 bg-[#FFC800] text-background p-2.5 rounded-full shadow-lg animate-pulse">
              <Zap className="w-6 h-6 fill-current" />
            </div>

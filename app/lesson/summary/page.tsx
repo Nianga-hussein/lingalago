@@ -15,7 +15,7 @@ function SummaryContent() {
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 sm:p-6 text-center">
       
       <div className="mb-8">
-         <Logo size="xl" animate />
+         <Logo size="xl" animate mood="celebrate" />
       </div>
 
       <h1 className="text-3xl font-bold text-brand-yellow mb-8">

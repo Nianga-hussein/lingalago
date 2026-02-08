@@ -11,7 +11,7 @@ const nunito = Nunito({
 export const metadata: Metadata = {
   title: "LingalaGo - Apprends le Lingala gratuitement",
   description:
-    "LingalaGo est une application gratuite pour apprendre le Lingala de maniere ludique. Decouvrez la richesse de la culture congolaise.",
+    "LingalaGo est une application gratuite pour apprendre le Lingala de maniere ludique et interactive. Decouvrez la richesse de la culture congolaise.",
 };
 
 export const viewport: Viewport = {

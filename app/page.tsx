@@ -37,7 +37,7 @@ export default function Home() {
         </div>
 
         <h1 className="text-3xl sm:text-4xl font-bold text-[#58CC02] mb-3 tracking-wide text-balance">
-          lingalago
+          LingalaGo
         </h1>
 
         <p className="text-lg sm:text-xl text-gray-400 font-medium mb-10 sm:mb-12 text-pretty">
@@ -88,7 +88,7 @@ export default function Home() {
       <footer className="bg-[#58CC02] py-8 sm:py-12 text-center">
         <div className="flex items-center justify-center gap-3 mb-3">
           <Logo size="xs" animate={false} />
-          <span className="font-bold text-background text-lg tracking-wide">lingalago</span>
+          <span className="font-bold text-background text-lg tracking-wide">LingalaGo</span>
         </div>
         <p className="text-background/80 font-bold text-sm">
           {"2026 LingalaGo. Fait avec amour pour l'Afrique."}

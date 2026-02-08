@@ -2,11 +2,16 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { X, Heart } from "lucide-react";
+import { X, Heart, Volume2 } from "lucide-react";
 import Link from "next/link";
 import VoiceRecorder from "@/app/components/VoiceRecorder";
 import Countdown from "@/app/components/Countdown";
 import HeartsModal from "@/app/components/HeartsModal";
+import AudioButton from "@/app/components/AudioButton";
+import VideoIntro, { hasVideoIntro } from "@/app/components/VideoIntro";
+import AnimatedCharacter, { getCharacterForLesson } from "@/app/components/AnimatedCharacter";
+import Logo from "@/app/components/Logo";
+import { useTTS } from "@/app/hooks/useTTS";
 
 type Option = {
   id: string;
@@ -44,6 +49,15 @@ export default function LessonClient({
   initialFailedIds?: string[]
 }) {
   const router = useRouter();
+  const { speak } = useTTS({ rate: 0.8 });
+
+  // --- Video Intro ---
+  const [showVideoIntro, setShowVideoIntro] = useState(() => hasVideoIntro(initialLesson.title));
+  
+  // --- Character ---
+  const lessonCharacter = getCharacterForLesson(initialLesson.exercises.length);
+  const [characterMood, setCharacterMood] = useState<"happy" | "encourage" | "celebrate" | "thinking">("encourage");
+  const logoMood = characterMood === "celebrate" ? "celebrate" : characterMood === "thinking" ? "thinking" : "encourage";
 
   // --- Sound Effects ---
   const soundCache = useRef<Record<string, HTMLAudioElement>>({});
@@ -223,8 +237,10 @@ export default function LessonClient({
 
     if (correct) {
        playSound("valide");
+       setCharacterMood("celebrate");
     } else {
        playSound("echec");
+       setCharacterMood("thinking");
        loseHeart();
        setFailedExerciseIds(prev => new Set(prev).add(initialLesson.exercises.find(e => e.question === currentExercise.question)?.id || currentExercise.id));
        
@@ -264,6 +280,7 @@ export default function LessonClient({
       setSelectedPairs({});
       setIsChecked(false);
       setIsCorrect(null);
+      setCharacterMood("encourage");
     } else {
       // Lesson Complete!
       await finishLesson();
@@ -382,6 +399,14 @@ export default function LessonClient({
 
   return (
     <div className="min-h-screen flex flex-col max-w-2xl mx-auto px-3 sm:px-4 py-4">
+      {/* Video Intro Overlay */}
+      {showVideoIntro && (
+        <VideoIntro 
+          lessonTitle={initialLesson.title} 
+          onContinue={() => setShowVideoIntro(false)} 
+        />
+      )}
+
       {/* Header */}
       <header className="flex items-center gap-4 mb-8">
         <Link href="/learn" className="text-gray-400 hover:text-gray-600">
@@ -399,11 +424,34 @@ export default function LessonClient({
         </div>
       </header>
 
+      {/* Animated Logo Mascot reacting to answers */}
+      {isChecked && (
+        <div className="mb-4 character-slide-in flex items-center gap-3">
+          <Logo size="md" animate mood={logoMood} />
+          <AnimatedCharacter
+            mood={characterMood}
+            character={lessonCharacter}
+            size="sm"
+            position="left"
+          />
+        </div>
+      )}
+
       {/* Content */}
       <main className="flex-1 flex flex-col justify-center">
-        <h1 className="text-2xl font-bold text-gray-800 mb-8">
-          {currentExercise.question}
-        </h1>
+        <div className="flex items-start gap-3 mb-8">
+          <h1 className="text-2xl font-bold text-gray-800 flex-1">
+            {currentExercise.question}
+          </h1>
+          {/* TTS Button for the question */}
+          {currentExercise.type !== "speech" && (
+            <AudioButton
+              text={currentExercise.question.replace(/[""«»*_]/g, "").replace("Que signifie ", "").replace("Comment dit-on ", "").replace(" ?", "").replace("Traduis : ", "").replace("Complete la phrase : ", "")}
+              size="md"
+              variant="ghost"
+            />
+          )}
+        </div>
 
         {/* --- IMAGE SELECTION --- */}
         {currentExercise.type === "image_selection" && (
@@ -412,12 +460,21 @@ export default function LessonClient({
               <button
                 key={option.id}
                 onClick={() => !isChecked && setSelectedOption(option.id)}
-                className={`p-6 rounded-2xl border-2 border-b-4 transition-all ${
+                className={`p-6 rounded-2xl border-2 border-b-4 transition-all relative ${
                   selectedOption === option.id
                     ? "border-brand-blue bg-blue-50"
                     : "border-gray-200 hover:bg-gray-50"
                 }`}
               >
+                {/* Audio icon */}
+                <button
+                  type="button"
+                  onClick={(e) => { e.stopPropagation(); speak(option.label); }}
+                  className="absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-colors"
+                  aria-label={`Ecouter ${option.label}`}
+                >
+                  <Volume2 className="w-4 h-4" />
+                </button>
                 {/* Fallback icon if not present */}
                 <div className="text-4xl mb-2">{option.icon || "🖼️"}</div> 
                 <div className="font-bold text-gray-700">{option.label}</div>
@@ -433,13 +490,22 @@ export default function LessonClient({
                  <button
                     key={option.id}
                     onClick={() => !isChecked && setSelectedOption(option.id)}
-                    className={`w-full p-4 rounded-xl border-2 border-b-4 text-left font-bold transition-all ${
+                    className={`w-full p-4 rounded-xl border-2 border-b-4 text-left font-bold transition-all flex items-center gap-3 ${
                        selectedOption === option.id
                        ? "border-brand-blue bg-blue-50 text-brand-blue"
                        : "border-gray-200 hover:bg-gray-50 text-gray-700"
                     }`}
                  >
-                    {option.label}
+                    <span className="flex-1">{option.label}</span>
+                    <span
+                      role="button"
+                      tabIndex={-1}
+                      onClick={(e) => { e.stopPropagation(); speak(option.label); }}
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-colors flex-shrink-0"
+                      aria-label={`Ecouter ${option.label}`}
+                    >
+                      <Volume2 className="w-4 h-4" />
+                    </span>
                  </button>
               ))}
            </div>
@@ -492,15 +558,26 @@ export default function LessonClient({
                            key={`left-${opt.id}`}
                            onClick={() => !isMatched && handleMatchClick({ id: opt.id, value: opt.left, side: 'left' })}
                            disabled={isMatched}
-                           className={`p-4 rounded-xl border-2 border-b-4 font-bold transition-all ${
+                           className={`p-4 rounded-xl border-2 border-b-4 font-bold transition-all flex items-center gap-2 ${
                               isMatched 
-                              ? "opacity-0 cursor-default" // Hide if matched
+                              ? "opacity-0 cursor-default"
                               : isSelected
                                 ? "border-brand-blue bg-blue-50 text-brand-blue"
                                 : "border-gray-200 hover:bg-gray-50 text-gray-700"
                            }`}
                         >
-                           {opt.left}
+                           <span className="flex-1 text-left">{opt.left}</span>
+                           {!isMatched && (
+                             <span
+                               role="button"
+                               tabIndex={-1}
+                               onClick={(e) => { e.stopPropagation(); speak(opt.left); }}
+                               className="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-brand-blue transition-colors flex-shrink-0"
+                               aria-label={`Ecouter ${opt.left}`}
+                             >
+                               <Volume2 className="w-3.5 h-3.5" />
+                             </span>
+                           )}
                         </button>
                     );
                  })}
@@ -543,12 +620,14 @@ export default function LessonClient({
         {currentExercise.type === "translation" && (
           <div className="space-y-8">
             <div className="flex items-center gap-4">
-               <div className="w-24 h-24 bg-brand-green rounded-full flex items-center justify-center border-4 border-white shadow-lg">
-                <span className="text-4xl">🦉</span>
-              </div>
-              <div className="p-4 border-2 border-gray-200 rounded-2xl relative bubble-left">
-                {/* The question usually contains the prompt text in the seed */}
-                <p className="font-medium text-gray-700">{currentExercise.question.replace("Traduire :", "").replace("**", "").replace("**", "")}</p>
+               <Logo size="md" animate mood="encourage" />
+              <div className="p-4 border-2 border-gray-200 rounded-2xl relative character-bubble-left flex items-center gap-3">
+                <p className="font-medium text-gray-700">{currentExercise.question.replace("Traduire :", "").replace("Traduis : ", "").replace(/[""]/g, "").trim()}</p>
+                <AudioButton
+                  text={currentExercise.question.replace("Traduire :", "").replace("Traduis : ", "").replace(/[""]/g, "").trim()}
+                  size="sm"
+                  variant="ghost"
+                />
               </div>
             </div>
 
@@ -599,10 +678,17 @@ export default function LessonClient({
                 }`}>
                   {isCorrect ? "Excellent !" : "La bonne réponse :"}
                 </h3>
-                {!isCorrect && (
-                  <p className="text-red-500 font-medium">
-                    {currentExercise.correctAnswer}
-                  </p>
+                {!isCorrect && currentExercise.correctAnswer && (
+                  <div className="flex items-center gap-2">
+                    <p className="text-red-500 font-medium">
+                      {currentExercise.correctAnswer}
+                    </p>
+                    <AudioButton
+                      text={currentExercise.correctAnswer}
+                      size="sm"
+                      variant="ghost"
+                    />
+                  </div>
                 )}
               </div>
             </div>

@@ -15,7 +15,7 @@ export default function IntroPage() {
 
       {/* Animated Mascot */}
       <div className="mb-10 sm:mb-12">
-        <Logo size="xl" animate />
+        <Logo size="xl" animate mood="encourage" />
       </div>
 
       <div className="flex-1"></div>
