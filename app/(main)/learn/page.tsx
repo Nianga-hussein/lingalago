@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Star, Book, Zap, Flame, Crown, Video, Headphones, Gift, NotebookText } from "lucide-react";
+import Image from "next/image";
+import { Star, Book, Zap, Flame, Crown, Video, Headphones, Gift, NotebookText, Volume2 } from "lucide-react";
 import { prisma } from "@/app/lib/prisma";
-import HeartsModal from "@/app/components/HeartsModal"; // Ensure you import this if used in LearnPage (client component needed) or keep it in layout
+import HeartsModal from "@/app/components/HeartsModal";
 
 // Helper to get lesson icon based on type
 const LessonIcon = ({ type, isCompleted, isLocked }: { type: string, isCompleted: boolean, isLocked: boolean }) => {
@@ -211,6 +212,31 @@ export default async function LearnPage() {
         </div>
       </header>
 
+      {/* Character Welcome Banner */}
+      <div className="px-3 sm:px-4 pt-4">
+        <div className="max-w-[600px] mx-auto">
+          <div className="flex items-center gap-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-4 border border-green-100">
+            <div className="w-16 h-16 relative flex-shrink-0 character-float">
+              <Image
+                src="/assets/characters/child-happy.jpg"
+                alt="Personnage encourageant"
+                fill
+                className="object-contain rounded-full"
+                sizes="64px"
+              />
+            </div>
+            <div className="character-bubble-left relative bg-white px-4 py-3 rounded-2xl border-2 border-gray-200 shadow-sm">
+              <p className="text-sm font-semibold text-foreground">
+                {userStats?.streak && userStats.streak > 0
+                  ? `Kokoba! Tu as une serie de ${userStats.streak} jours !`
+                  : "Mbote! Pret a apprendre le Lingala aujourd'hui ?"
+                }
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Render Units */}
       <div className="px-3 sm:px-4 py-6 max-w-[600px] mx-auto">
         {units.map((unit) => (
@@ -284,6 +310,12 @@ export default async function LearnPage() {
                                   <div className="w-4 h-4 bg-brand-yellow rounded-full border-2 border-white flex items-center justify-center">
                                      <Star className="w-2 h-2 text-white fill-current" />
                                   </div>
+                               </div>
+                            )}
+                            {/* Audio indicator on all lessons */}
+                            {!lesson.isCompleted && !isLocked && (
+                               <div className="absolute -bottom-1 -left-1 w-5 h-5 bg-brand-blue rounded-full border-2 border-white flex items-center justify-center">
+                                  <Volume2 className="w-2.5 h-2.5 text-white" />
                                </div>
                             )}
                           </div>
