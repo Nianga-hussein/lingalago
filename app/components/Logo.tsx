@@ -45,19 +45,20 @@ export default function Logo({
   const moodConfig = getMoodConfig(mood, blink);
 
   return (
-    <div className={`inline-flex items-center gap-2 ${className}`}>
+    <div className={`inline-flex items-center gap-2 ${className}`} suppressHydrationWarning>
       <div
-        className={`relative ${animate ? moodConfig.containerClass : ""}`}
+        className={`relative ${animate && moodConfig.containerClass ? moodConfig.containerClass : ""}`}
         style={{
           width: dim,
           height: dim,
           perspective: "400px",
         }}
+        suppressHydrationWarning
       >
         {/* 3D Shadow */}
         {animate && (
           <div
-            className={`absolute bottom-[-8%] left-[15%] w-[70%] h-[18%] rounded-[50%] bg-black/10 blur-sm ${moodConfig.shadowClass}`}
+            className={`absolute bottom-[-8%] left-[15%] w-[70%] h-[18%] rounded-[50%] bg-black/10 blur-sm ${moodConfig.shadowClass || ""}`}
           />
         )}
 
@@ -66,11 +67,11 @@ export default function Logo({
           viewBox="0 0 200 200"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className={`w-full h-full overflow-visible ${animate ? moodConfig.bodyClass : ""}`}
-          style={{ transformStyle: "preserve-3d" }}
+          className={`w-full h-full overflow-visible ${animate && moodConfig.bodyClass ? moodConfig.bodyClass : ""}`}
+          style={{ transformStyle: "preserve-3d" } as React.CSSProperties}
         >
           {/* === BODY === */}
-          <g className={animate ? moodConfig.torsoClass : ""} style={{ transformOrigin: "100px 140px" }}>
+          <g className={animate && moodConfig.torsoClass ? moodConfig.torsoClass : undefined} style={{ transformOrigin: "100px 140px" } as React.CSSProperties}>
             <ellipse cx="100" cy="115" rx="62" ry="70" fill="#58CC02" />
             <ellipse cx="85" cy="100" rx="35" ry="45" fill="#6EE018" opacity="0.5" />
             <ellipse cx="100" cy="155" rx="50" ry="25" fill="#46A302" opacity="0.4" />
@@ -82,8 +83,8 @@ export default function Logo({
 
           {/* === LEFT WING === */}
           <g
-            className={animate ? moodConfig.leftWingClass : ""}
-            style={{ transformOrigin: "55px 120px" }}
+            className={animate && moodConfig.leftWingClass ? moodConfig.leftWingClass : undefined}
+            style={{ transformOrigin: "55px 120px" } as React.CSSProperties}
           >
             <path
               d="M38 100 C25 85 20 110 30 135 C35 145 50 145 55 130 Z"
@@ -96,7 +97,7 @@ export default function Logo({
             />
             {/* Feather tips for gesture detail */}
             {(mood === "encourage" || mood === "celebrate") && animate && (
-              <g className="owl-finger-wiggle" style={{ transformOrigin: "30px 135px" }}>
+              <g className="owl-finger-wiggle" style={{ transformOrigin: "30px 135px" } as React.CSSProperties}>
                 <ellipse cx="25" cy="140" rx="5" ry="3" fill="#1CB0F6" />
                 <ellipse cx="32" cy="143" rx="5" ry="3" fill="#1CB0F6" />
                 <ellipse cx="39" cy="140" rx="5" ry="3" fill="#1CB0F6" />
@@ -106,8 +107,8 @@ export default function Logo({
 
           {/* === RIGHT WING === */}
           <g
-            className={animate ? moodConfig.rightWingClass : ""}
-            style={{ transformOrigin: "145px 120px" }}
+            className={animate && moodConfig.rightWingClass ? moodConfig.rightWingClass : undefined}
+            style={{ transformOrigin: "145px 120px" } as React.CSSProperties}
           >
             <path
               d="M162 100 C175 85 180 110 170 135 C165 145 150 145 145 130 Z"
@@ -119,7 +120,7 @@ export default function Logo({
               opacity="0.6"
             />
             {mood === "celebrate" && animate && (
-              <g className="owl-finger-wiggle" style={{ transformOrigin: "170px 135px" }}>
+              <g className="owl-finger-wiggle" style={{ transformOrigin: "170px 135px" } as React.CSSProperties}>
                 <ellipse cx="165" cy="140" rx="5" ry="3" fill="#1CB0F6" />
                 <ellipse cx="172" cy="143" rx="5" ry="3" fill="#1CB0F6" />
                 <ellipse cx="179" cy="140" rx="5" ry="3" fill="#1CB0F6" />
@@ -129,8 +130,8 @@ export default function Logo({
 
           {/* === HEAD === */}
           <g
-            className={animate ? moodConfig.headClass : ""}
-            style={{ transformOrigin: "100px 65px" }}
+            className={animate && moodConfig.headClass ? moodConfig.headClass : undefined}
+            style={{ transformOrigin: "100px 65px" } as React.CSSProperties}
           >
             <circle cx="100" cy="65" r="45" fill="#58CC02" />
             <circle cx="88" cy="52" r="25" fill="#6EE018" opacity="0.5" />
@@ -138,7 +139,7 @@ export default function Logo({
 
             {/* Left Eye */}
             <ellipse cx="82" cy="60" rx="14" ry="15" fill="white" />
-            <g className={animate ? moodConfig.pupilClass : ""} style={{ transformOrigin: "85px 61px" }}>
+            <g className={animate && moodConfig.pupilClass ? moodConfig.pupilClass : undefined} style={{ transformOrigin: "85px 61px" } as React.CSSProperties}>
               {moodConfig.eyeShape === "squint" ? (
                 /* Squint eyes for thinking */
                 <path d="M78 61 Q85 55 92 61" stroke="#2D2D2D" strokeWidth="3" fill="none" strokeLinecap="round" />
@@ -169,7 +170,7 @@ export default function Logo({
 
             {/* Right Eye */}
             <ellipse cx="118" cy="60" rx="14" ry="15" fill="white" />
-            <g className={animate ? moodConfig.pupilClass : ""} style={{ transformOrigin: "121px 61px" }}>
+            <g className={animate && moodConfig.pupilClass ? moodConfig.pupilClass : undefined} style={{ transformOrigin: "121px 61px" } as React.CSSProperties}>
               {moodConfig.eyeShape === "squint" ? (
                 <path d="M114 61 Q121 55 128 61" stroke="#2D2D2D" strokeWidth="3" fill="none" strokeLinecap="round" />
               ) : moodConfig.eyeShape === "wide" ? (
@@ -225,7 +226,7 @@ export default function Logo({
 
             {/* Thinking hand (wing tip near chin) */}
             {mood === "thinking" && animate && (
-              <g className="owl-think-hand" style={{ transformOrigin: "75px 92px" }}>
+              <g className="owl-think-hand" style={{ transformOrigin: "75px 92px" } as React.CSSProperties}>
                 <ellipse cx="75" cy="92" rx="8" ry="6" fill="#1CB0F6" />
                 <ellipse cx="70" cy="95" rx="3" ry="2" fill="#47C1F8" />
               </g>
@@ -233,23 +234,23 @@ export default function Logo({
           </g>
 
           {/* === FEATHERS/CREST === */}
-          <g style={{ transformOrigin: "100px 22px" }}>
+          <g style={{ transformOrigin: "100px 22px" } as React.CSSProperties}>
             <path
               d="M100 22 C95 5 88 12 92 22"
               fill="#46A302"
-              className={animate ? moodConfig.featherClass : ""}
-              style={{ transformOrigin: "96px 22px" }}
+              className={animate && moodConfig.featherClass ? moodConfig.featherClass : undefined}
+              style={{ transformOrigin: "96px 22px" } as React.CSSProperties}
             />
             <path
               d="M105 22 C112 8 118 15 112 24"
               fill="#58CC02"
-              className={animate ? moodConfig.feather2Class : ""}
-              style={{ transformOrigin: "108px 24px" }}
+              className={animate && moodConfig.feather2Class ? moodConfig.feather2Class : undefined}
+              style={{ transformOrigin: "108px 24px" } as React.CSSProperties}
             />
           </g>
 
           {/* === FEET === */}
-          <g className={animate ? moodConfig.feetClass : ""} style={{ transformOrigin: "100px 182px" }}>
+          <g className={animate && moodConfig.feetClass ? moodConfig.feetClass : undefined} style={{ transformOrigin: "100px 182px" } as React.CSSProperties}>
             <ellipse cx="82" cy="182" rx="12" ry="6" fill="#FFC800" />
             <ellipse cx="118" cy="182" rx="12" ry="6" fill="#FFC800" />
             <circle cx="73" cy="184" r="3" fill="#FFD633" />
