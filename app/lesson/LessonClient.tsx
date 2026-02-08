@@ -10,6 +10,7 @@ import HeartsModal from "@/app/components/HeartsModal";
 import AudioButton from "@/app/components/AudioButton";
 import VideoIntro, { hasVideoIntro } from "@/app/components/VideoIntro";
 import AnimatedCharacter, { getCharacterForLesson } from "@/app/components/AnimatedCharacter";
+import Logo from "@/app/components/Logo";
 import { useTTS } from "@/app/hooks/useTTS";
 
 type Option = {
@@ -56,6 +57,7 @@ export default function LessonClient({
   // --- Character ---
   const lessonCharacter = getCharacterForLesson(initialLesson.exercises.length);
   const [characterMood, setCharacterMood] = useState<"happy" | "encourage" | "celebrate" | "thinking">("encourage");
+  const logoMood = characterMood === "celebrate" ? "celebrate" : characterMood === "thinking" ? "thinking" : "encourage";
 
   // --- Sound Effects ---
   const soundCache = useRef<Record<string, HTMLAudioElement>>({});
@@ -422,9 +424,10 @@ export default function LessonClient({
         </div>
       </header>
 
-      {/* Animated Character */}
+      {/* Animated Logo Mascot reacting to answers */}
       {isChecked && (
-        <div className="mb-4 character-slide-in">
+        <div className="mb-4 character-slide-in flex items-center gap-3">
+          <Logo size="md" animate mood={logoMood} />
           <AnimatedCharacter
             mood={characterMood}
             character={lessonCharacter}
@@ -617,12 +620,7 @@ export default function LessonClient({
         {currentExercise.type === "translation" && (
           <div className="space-y-8">
             <div className="flex items-center gap-4">
-               <AnimatedCharacter
-                 mood="encourage"
-                 character={lessonCharacter}
-                 size="sm"
-                 showMessage={false}
-               />
+               <Logo size="md" animate mood="encourage" />
               <div className="p-4 border-2 border-gray-200 rounded-2xl relative character-bubble-left flex items-center gap-3">
                 <p className="font-medium text-gray-700">{currentExercise.question.replace("Traduire :", "").replace("Traduis : ", "").replace(/[""]/g, "").trim()}</p>
                 <AudioButton

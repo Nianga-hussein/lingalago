@@ -56,7 +56,7 @@ export default function LoginPage() {
         <div className="absolute inset-0 opacity-10 pattern-dots"></div>
         <div className="relative z-10 text-center text-background max-w-lg">
           <div className="mx-auto mb-8 flex items-center justify-center">
-            <Logo size="xl" animate />
+            <Logo size="xl" animate mood="encourage" />
           </div>
           <h2 className="text-4xl font-bold mb-6">Bon retour parmi nous !</h2>
           <p className="text-xl text-green-100 leading-relaxed">

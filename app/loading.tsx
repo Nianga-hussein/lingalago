@@ -4,7 +4,7 @@ export default function Loading() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background p-6 text-center">
       <div className="relative mb-8">
-        <Logo size="xl" animate />
+        <Logo size="xl" animate mood="loading" />
       </div>
 
       <h2 className="text-gray-400 font-bold tracking-widest uppercase mb-4 text-sm animate-pulse">
