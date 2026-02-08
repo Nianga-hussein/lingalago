@@ -2,7 +2,10 @@ import Link from "next/link";
 import { Star, Book, Zap, Flame, Crown, Video, Headphones, Gift, NotebookText, Volume2 } from "lucide-react";
 import { prisma } from "@/app/lib/prisma";
 import HeartsModal from "@/app/components/HeartsModal";
+<<<<<<< HEAD
 import LearnCharacterBanner from "@/app/components/LearnCharacterBanner";
+=======
+>>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 
 // Helper to get lesson icon based on type
 const LessonIcon = ({ type, isCompleted, isLocked }: { type: string, isCompleted: boolean, isLocked: boolean }) => {
@@ -212,10 +215,70 @@ export default async function LearnPage() {
         </div>
       </header>
 
+<<<<<<< HEAD
       {/* Character Welcome Banner (3D) */}
       <div className="px-3 sm:px-4 pt-4">
         <div className="max-w-[600px] mx-auto">
           <LearnCharacterBanner streak={userStats?.streak ?? 0} />
+=======
+      {/* Character Welcome Banner */}
+      <div className="px-3 sm:px-4 pt-4">
+        <div className="max-w-[600px] mx-auto">
+          <div className="flex items-center gap-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-4 border border-green-100">
+            {/* Inline SVG character with gesture animations */}
+            <div className="flex-shrink-0 character-float" style={{ width: 70, height: 70 }}>
+              <svg width="70" height="70" viewBox="0 0 200 260" fill="none" xmlns="http://www.w3.org/2000/svg" className="overflow-visible">
+                <g>
+                  <ellipse cx="100" cy="252" rx="35" ry="6" fill="#00000015" className="anim-shadow" />
+                  <rect x="76" y="185" width="18" height="40" rx="9" fill="#C68642" />
+                  <rect x="106" y="185" width="18" height="40" rx="9" fill="#C68642" />
+                  <ellipse cx="85" cy="228" rx="14" ry="8" fill="#3d3d3d" />
+                  <ellipse cx="115" cy="228" rx="14" ry="8" fill="#3d3d3d" />
+                  <rect x="68" y="120" width="64" height="68" rx="16" fill="#1CB0F6" />
+                  <path d="M88 120 L100 130 L112 120" stroke="#0984C4" strokeWidth="3" fill="none" />
+                  <g className="anim-arm-wave" style={{ transformOrigin: "80px 128px" }}>
+                    <rect x="50" y="122" width="22" height="35" rx="11" fill="#C68642" />
+                    <g className="anim-forearm-wave" style={{ transformOrigin: "61px 158px" }}>
+                      <rect x="48" y="155" width="18" height="28" rx="9" fill="#C68642" />
+                      <circle cx="57" cy="185" r="10" fill="#C68642" />
+                      <g className="anim-fingers">
+                        <rect x="49" y="176" width="4" height="10" rx="2" fill="#C68642" transform="rotate(-10 51 181)" />
+                        <rect x="55" y="174" width="4" height="11" rx="2" fill="#C68642" />
+                        <rect x="61" y="176" width="4" height="10" rx="2" fill="#C68642" transform="rotate(10 63 181)" />
+                      </g>
+                    </g>
+                  </g>
+                  <g className="anim-arm-idle-right" style={{ transformOrigin: "120px 128px" }}>
+                    <rect x="128" y="122" width="22" height="35" rx="11" fill="#C68642" />
+                    <rect x="132" y="155" width="18" height="28" rx="9" fill="#C68642" />
+                    <circle cx="141" cy="185" r="10" fill="#C68642" />
+                  </g>
+                  <g className="anim-head-nod-slow" style={{ transformOrigin: "100px 90px" }}>
+                    <rect x="90" y="108" width="20" height="18" rx="8" fill="#C68642" />
+                    <ellipse cx="100" cy="76" rx="34" ry="36" fill="#C68642" />
+                    <ellipse cx="100" cy="52" rx="32" ry="22" fill="#1a1a2e" />
+                    <circle cx="76" cy="58" r="8" fill="#1a1a2e" />
+                    <circle cx="124" cy="58" r="8" fill="#1a1a2e" />
+                    <path d="M82 76 Q86 72 90 76" stroke="#1a1a2e" strokeWidth="3" fill="none" strokeLinecap="round" />
+                    <path d="M110 76 Q114 72 118 76" stroke="#1a1a2e" strokeWidth="3" fill="none" strokeLinecap="round" />
+                    <ellipse cx="100" cy="86" rx="3" ry="4" fill="#C68642" stroke="#00000020" strokeWidth="1" />
+                    <path d="M88 96 Q100 108 112 96" stroke="#c0392b" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                    <ellipse cx="74" cy="88" rx="8" ry="5" fill="#FF6B6B30" />
+                    <ellipse cx="126" cy="88" rx="8" ry="5" fill="#FF6B6B30" />
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <div className="character-bubble-left relative bg-white px-4 py-3 rounded-2xl border-2 border-gray-200 shadow-sm">
+              <p className="text-sm font-semibold text-foreground">
+                {userStats?.streak && userStats.streak > 0
+                  ? `Kokoba! Tu as une serie de ${userStats.streak} jours !`
+                  : "Mbote! Pret a apprendre le Lingala aujourd'hui ?"
+                }
+              </p>
+            </div>
+          </div>
+>>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
         </div>
       </div>
 
@@ -286,6 +349,7 @@ export default async function LearnPage() {
                             <LessonIcon type={lesson.type} isCompleted={false} isLocked={false} />
                           )}
 
+<<<<<<< HEAD
                           {/* Stars for completion (if any logic for stars existed) */}
                           {lesson.isCompleted && (
                             <div className="absolute -bottom-2 -right-1 flex">
@@ -300,6 +364,27 @@ export default async function LearnPage() {
                               <Volume2 className="w-2.5 h-2.5 text-white" />
                             </div>
                           )}
+=======
+                            {/* Stars for completion (if any logic for stars existed) */}
+                            {lesson.isCompleted && (
+                               <div className="absolute -bottom-2 -right-1 flex">
+                                  <div className="w-4 h-4 bg-brand-yellow rounded-full border-2 border-white flex items-center justify-center">
+                                     <Star className="w-2 h-2 text-white fill-current" />
+                                  </div>
+                               </div>
+                            )}
+                            {/* Audio indicator on all lessons */}
+                            {!lesson.isCompleted && !isLocked && (
+                               <div className="absolute -bottom-1 -left-1 w-5 h-5 bg-brand-blue rounded-full border-2 border-white flex items-center justify-center">
+                                  <Volume2 className="w-2.5 h-2.5 text-white" />
+                               </div>
+                            )}
+                          </div>
+                       </Link>
+                     ) : (
+                        <div className={`w-[70px] h-[70px] ${nodeColor} rounded-full flex items-center justify-center ${shadowColor} relative z-10`}>
+                          <LessonIcon type={lesson.type} isCompleted={false} isLocked={true} />
+>>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
                         </div>
                       </Link>
                     ) : (
