@@ -356,11 +356,6 @@ export default async function LearnPage() {
                           </div>
                        </Link>
                      ) : (
-                        <div className={`w-[70px] h-[70px] ${nodeColor} rounded-full flex items-center justify-center ${shadowColor} relative z-10`}>
-                          <LessonIcon type={lesson.type} isCompleted={false} isLocked={true} />
-                        </div>
-                      </Link>
-                    ) : (
                       <div className={`w-[70px] h-[70px] ${nodeColor} rounded-full flex items-center justify-center ${shadowColor} relative z-10`}>
                         <LessonIcon type={lesson.type} isCompleted={false} isLocked={true} />
                       </div>
