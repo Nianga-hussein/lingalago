@@ -116,46 +116,234 @@ body {
   animation: bounceSlow 3s ease-in-out infinite;
 }
 
-/* ===== Character Animation Keyframes ===== */
+/* ===== Character Articulated Gesture Animations ===== */
 
-@keyframes characterFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes characterBounce {
-  0% { transform: translateY(0) scale(1); }
-  25% { transform: translateY(-15px) scale(1.05); }
-  50% { transform: translateY(0) scale(1); }
-  75% { transform: translateY(-8px) scale(1.02); }
-  100% { transform: translateY(0) scale(1); }
-}
-
-@keyframes characterWobble {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-5deg); }
-  75% { transform: rotate(5deg); }
-}
-
+/* --- Entry Animation --- */
 @keyframes characterSlideIn {
   from { opacity: 0; transform: translateX(-30px); }
   to { opacity: 1; transform: translateX(0); }
 }
 
+.character-slide-in {
+  animation: characterSlideIn 0.5s ease-out;
+}
+
+/* Old class kept for learn page banner */
 .character-float {
   animation: characterFloat 3s ease-in-out infinite;
 }
 
-.character-bounce {
-  animation: characterBounce 0.8s ease-in-out;
+@keyframes characterFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
-.character-wobble {
-  animation: characterWobble 1.5s ease-in-out infinite;
+/* --- LEFT ARM: Wave gesture (encourage) --- */
+@keyframes armWave {
+  0%   { transform: rotate(0deg); }
+  15%  { transform: rotate(-120deg); }
+  30%  { transform: rotate(-100deg); }
+  45%  { transform: rotate(-120deg); }
+  60%  { transform: rotate(-100deg); }
+  75%  { transform: rotate(-120deg); }
+  90%  { transform: rotate(-60deg); }
+  100% { transform: rotate(0deg); }
 }
 
-.character-slide-in {
-  animation: characterSlideIn 0.5s ease-out;
+.anim-arm-wave {
+  animation: armWave 2.2s ease-in-out infinite;
+}
+
+/* --- FOREARM: Additional wave flick --- */
+@keyframes forearmWave {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-20deg); }
+  50% { transform: rotate(10deg); }
+  75% { transform: rotate(-15deg); }
+}
+
+.anim-forearm-wave {
+  animation: forearmWave 0.6s ease-in-out infinite;
+}
+
+/* --- LEFT ARM: Celebrate (raise high) --- */
+@keyframes armCelebrateLeft {
+  0%   { transform: rotate(0deg); }
+  20%  { transform: rotate(-160deg); }
+  40%  { transform: rotate(-145deg); }
+  60%  { transform: rotate(-160deg); }
+  80%  { transform: rotate(-145deg); }
+  100% { transform: rotate(-160deg); }
+}
+
+.anim-arm-celebrate-left {
+  animation: armCelebrateLeft 1.5s ease-in-out infinite;
+}
+
+/* --- RIGHT ARM: Celebrate (raise high) --- */
+@keyframes armCelebrateRight {
+  0%   { transform: rotate(0deg); }
+  20%  { transform: rotate(160deg); }
+  40%  { transform: rotate(145deg); }
+  60%  { transform: rotate(160deg); }
+  80%  { transform: rotate(145deg); }
+  100% { transform: rotate(160deg); }
+}
+
+.anim-arm-celebrate-right {
+  animation: armCelebrateRight 1.5s ease-in-out infinite;
+}
+
+/* --- LEFT ARM: Thinking (hand to chin) --- */
+@keyframes armChin {
+  0%   { transform: rotate(0deg); }
+  30%  { transform: rotate(-85deg); }
+  100% { transform: rotate(-85deg); }
+}
+
+.anim-arm-chin {
+  animation: armChin 0.6s ease-out forwards;
+}
+
+/* --- LEFT ARM: Idle (slight sway) --- */
+@keyframes armIdleLeft {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-5deg); }
+}
+
+.anim-arm-idle {
+  animation: armIdleLeft 3s ease-in-out infinite;
+}
+
+/* --- RIGHT ARM: Idle --- */
+@keyframes armIdleRight {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(5deg); }
+}
+
+.anim-arm-idle-right {
+  animation: armIdleRight 3s ease-in-out infinite;
+}
+
+/* --- RIGHT ARM: Happy wave (small) --- */
+@keyframes armHappyRight {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  50% { transform: rotate(-5deg); }
+  75% { transform: rotate(10deg); }
+}
+
+.anim-arm-happy-right {
+  animation: armHappyRight 2s ease-in-out infinite;
+}
+
+/* --- HEAD: Tilt for thinking --- */
+@keyframes headTilt {
+  0%   { transform: rotate(0deg); }
+  30%  { transform: rotate(8deg); }
+  60%  { transform: rotate(10deg); }
+  100% { transform: rotate(8deg); }
+}
+
+.anim-head-tilt {
+  animation: headTilt 2s ease-in-out infinite alternate;
+}
+
+/* --- HEAD: Nod for celebrate --- */
+@keyframes headNod {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(4px); }
+  50% { transform: translateY(0); }
+  75% { transform: translateY(4px); }
+}
+
+.anim-head-nod {
+  animation: headNod 0.8s ease-in-out infinite;
+}
+
+/* --- HEAD: Slow gentle nod for happy --- */
+@keyframes headNodSlow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(2px) rotate(2deg); }
+}
+
+.anim-head-nod-slow {
+  animation: headNodSlow 3s ease-in-out infinite;
+}
+
+/* --- BODY: Jump for celebrate --- */
+@keyframes bodyJump {
+  0%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-12px); }
+  50% { transform: translateY(0); }
+  70% { transform: translateY(-8px); }
+}
+
+.anim-body-jump {
+  animation: bodyJump 1.2s ease-in-out infinite;
+}
+
+/* --- Shadow pulse with jump --- */
+@keyframes shadowPulse {
+  0%, 100% { transform: scaleX(1); opacity: 0.08; }
+  30% { transform: scaleX(0.7); opacity: 0.04; }
+  50% { transform: scaleX(1); opacity: 0.08; }
+  70% { transform: scaleX(0.8); opacity: 0.05; }
+}
+
+.anim-shadow {
+  animation: shadowPulse 1.2s ease-in-out infinite;
+}
+
+/* --- PUPILS: Look around --- */
+@keyframes pupilLook {
+  0%, 100% { transform: translateX(0); }
+  30% { transform: translateX(2px); }
+  60% { transform: translateX(-2px); }
+}
+
+.anim-pupil {
+  animation: pupilLook 4s ease-in-out infinite;
+}
+
+/* --- FINGERS: Wiggle --- */
+@keyframes fingerWiggle {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.9); }
+}
+
+.anim-fingers {
+  animation: fingerWiggle 0.4s ease-in-out infinite;
+}
+
+/* --- LEGS: Subtle bounce --- */
+@keyframes legBounceLeft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+@keyframes legBounceRight {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+.anim-leg-left {
+  animation: legBounceLeft 1.2s ease-in-out infinite;
+  animation-delay: 0.1s;
+}
+
+.anim-leg-right {
+  animation: legBounceRight 1.2s ease-in-out infinite;
+}
+
+/* --- Thinking hand floating near chin --- */
+@keyframes thinkHandFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+.anim-think-hand {
+  animation: thinkHandFloat 2s ease-in-out infinite;
 }
 
 /* Speech bubble arrow */
