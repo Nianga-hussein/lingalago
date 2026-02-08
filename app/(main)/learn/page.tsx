@@ -2,10 +2,7 @@ import Link from "next/link";
 import { Star, Book, Zap, Flame, Crown, Video, Headphones, Gift, NotebookText, Volume2 } from "lucide-react";
 import { prisma } from "@/app/lib/prisma";
 import HeartsModal from "@/app/components/HeartsModal";
-<<<<<<< HEAD
 import LearnCharacterBanner from "@/app/components/LearnCharacterBanner";
-=======
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
 
 // Helper to get lesson icon based on type
 const LessonIcon = ({ type, isCompleted, isLocked }: { type: string, isCompleted: boolean, isLocked: boolean }) => {
@@ -215,12 +212,6 @@ export default async function LearnPage() {
         </div>
       </header>
 
-<<<<<<< HEAD
-      {/* Character Welcome Banner (3D) */}
-      <div className="px-3 sm:px-4 pt-4">
-        <div className="max-w-[600px] mx-auto">
-          <LearnCharacterBanner streak={userStats?.streak ?? 0} />
-=======
       {/* Character Welcome Banner */}
       <div className="px-3 sm:px-4 pt-4">
         <div className="max-w-[600px] mx-auto">
@@ -278,7 +269,6 @@ export default async function LearnPage() {
               </p>
             </div>
           </div>
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
         </div>
       </div>
 
@@ -349,22 +339,6 @@ export default async function LearnPage() {
                             <LessonIcon type={lesson.type} isCompleted={false} isLocked={false} />
                           )}
 
-<<<<<<< HEAD
-                          {/* Stars for completion (if any logic for stars existed) */}
-                          {lesson.isCompleted && (
-                            <div className="absolute -bottom-2 -right-1 flex">
-                              <div className="w-4 h-4 bg-brand-yellow rounded-full border-2 border-white flex items-center justify-center">
-                                <Star className="w-2 h-2 text-white fill-current" />
-                              </div>
-                            </div>
-                          )}
-                          {/* Audio indicator on all lessons */}
-                          {!lesson.isCompleted && !isLocked && (
-                            <div className="absolute -bottom-1 -left-1 w-5 h-5 bg-brand-blue rounded-full border-2 border-white flex items-center justify-center">
-                              <Volume2 className="w-2.5 h-2.5 text-white" />
-                            </div>
-                          )}
-=======
                             {/* Stars for completion (if any logic for stars existed) */}
                             {lesson.isCompleted && (
                                <div className="absolute -bottom-2 -right-1 flex">
@@ -384,7 +358,6 @@ export default async function LearnPage() {
                      ) : (
                         <div className={`w-[70px] h-[70px] ${nodeColor} rounded-full flex items-center justify-center ${shadowColor} relative z-10`}>
                           <LessonIcon type={lesson.type} isCompleted={false} isLocked={true} />
->>>>>>> 7b92bd8dc3d46e208c5efd03893793e39bad2d59
                         </div>
                       </Link>
                     ) : (
