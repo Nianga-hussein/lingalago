@@ -115,3 +115,94 @@ body {
 .animate-bounce-slow {
   animation: bounceSlow 3s ease-in-out infinite;
 }
+
+/* ===== Character Animation Keyframes ===== */
+
+@keyframes characterFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes characterBounce {
+  0% { transform: translateY(0) scale(1); }
+  25% { transform: translateY(-15px) scale(1.05); }
+  50% { transform: translateY(0) scale(1); }
+  75% { transform: translateY(-8px) scale(1.02); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes characterWobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+@keyframes characterSlideIn {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.character-float {
+  animation: characterFloat 3s ease-in-out infinite;
+}
+
+.character-bounce {
+  animation: characterBounce 0.8s ease-in-out;
+}
+
+.character-wobble {
+  animation: characterWobble 1.5s ease-in-out infinite;
+}
+
+.character-slide-in {
+  animation: characterSlideIn 0.5s ease-out;
+}
+
+/* Speech bubble arrow */
+.character-bubble-left::before {
+  content: '';
+  position: absolute;
+  bottom: 12px;
+  left: -10px;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 10px solid #e5e5e5;
+}
+
+.character-bubble-left::after {
+  content: '';
+  position: absolute;
+  bottom: 13px;
+  left: -7px;
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 8px solid white;
+}
+
+.character-bubble-right::before {
+  content: '';
+  position: absolute;
+  bottom: 12px;
+  right: -10px;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 10px solid #e5e5e5;
+}
+
+.character-bubble-right::after {
+  content: '';
+  position: absolute;
+  bottom: 13px;
+  right: -7px;
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 8px solid white;
+}
